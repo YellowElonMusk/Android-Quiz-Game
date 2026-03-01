@@ -1,69 +1,1273 @@
-[
-  {"question": "Which social media platform is known for its 280-character limit?", "options": ["Facebook", "Twitter/X", "Instagram", "TikTok"], "answer": 1, "difficulty": "rookie"},
-  {"question": "What is the name of the fictional country in 'Black Panther'?", "options": ["Genovia", "Wakanda", "Zamunda", "Latveria"], "answer": 1, "difficulty": "rookie"},
-  {"question": "Who painted the Mona Lisa?", "options": ["Michelangelo", "Leonardo da Vinci", "Raphael", "Donatello"], "answer": 1, "difficulty": "rookie"},
-  {"question": "What year was the first iPhone released?", "options": ["2005", "2006", "2007", "2008"], "answer": 2, "difficulty": "rookie"},
-  {"question": "Which boy band had members named Justin, JC, Chris, Joey, and Lance?", "options": ["Backstreet Boys", "*NSYNC", "98 Degrees", "New Kids on the Block"], "answer": 1, "difficulty": "rookie"},
-  {"question": "What is the name of Homer Simpson's favorite bar?", "options": ["The Drunken Clam", "Paddy's Pub", "Moe's Tavern", "MacLaren's"], "answer": 2, "difficulty": "rookie"},
-  {"question": "Which streaming service produced 'Stranger Things'?", "options": ["Hulu", "Amazon Prime", "Netflix", "Disney+"], "answer": 2, "difficulty": "rookie"},
-  {"question": "What does 'LOL' stand for?", "options": ["Lots of Love", "Laugh Out Loud", "Living Our Lives", "Lack of Logic"], "answer": 1, "difficulty": "rookie"},
-  {"question": "Who is known as the 'Queen of Pop'?", "options": ["Beyoncé", "Lady Gaga", "Madonna", "Rihanna"], "answer": 2, "difficulty": "rookie"},
-  {"question": "What color are the Smurfs?", "options": ["Green", "Blue", "Purple", "Red"], "answer": 1, "difficulty": "rookie"},
-  {"question": "Which app uses a ghost as its logo?", "options": ["WhatsApp", "Telegram", "Snapchat", "Signal"], "answer": 2, "difficulty": "rookie"},
-  {"question": "What is the best-selling video game of all time?", "options": ["Tetris", "Minecraft", "GTA V", "Wii Sports"], "answer": 1, "difficulty": "veteran"},
-  {"question": "Which artist released the album 'Thriller'?", "options": ["Prince", "Michael Jackson", "Stevie Wonder", "Whitney Houston"], "answer": 1, "difficulty": "rookie"},
-  {"question": "In which decade did the 'Macarena' become a worldwide hit?", "options": ["1980s", "1990s", "2000s", "1970s"], "answer": 1, "difficulty": "rookie"},
-  {"question": "What is the name of the fictional wizarding school in Harry Potter?", "options": ["Beauxbatons", "Durmstrang", "Hogwarts", "Ilvermorny"], "answer": 2, "difficulty": "rookie"},
-  {"question": "Which company created the PlayStation?", "options": ["Nintendo", "Sega", "Microsoft", "Sony"], "answer": 3, "difficulty": "rookie"},
-  {"question": "Who played Iron Man in the Marvel Cinematic Universe?", "options": ["Chris Evans", "Chris Hemsworth", "Robert Downey Jr.", "Mark Ruffalo"], "answer": 2, "difficulty": "rookie"},
-  {"question": "What is Baby Yoda's real name in 'The Mandalorian'?", "options": ["Yodel", "Grogu", "Yaddle", "Minch"], "answer": 1, "difficulty": "veteran"},
-  {"question": "Which K-pop group performed 'Dynamite'?", "options": ["BLACKPINK", "BTS", "EXO", "TWICE"], "answer": 1, "difficulty": "rookie"},
-  {"question": "What was the first feature-length Pixar film?", "options": ["A Bug's Life", "Finding Nemo", "Toy Story", "Monsters, Inc."], "answer": 2, "difficulty": "rookie"},
-  {"question": "Which reality TV show takes place on a deserted island?", "options": ["Big Brother", "The Amazing Race", "Survivor", "The Bachelor"], "answer": 2, "difficulty": "rookie"},
-  {"question": "What is the name of SpongeBob's pet snail?", "options": ["Gary", "Larry", "Barry", "Jerry"], "answer": 0, "difficulty": "rookie"},
-  {"question": "Who wrote the 'Game of Thrones' book series?", "options": ["J.R.R. Tolkien", "George R.R. Martin", "Patrick Rothfuss", "Brandon Sanderson"], "answer": 1, "difficulty": "veteran"},
-  {"question": "Which character says 'I am Groot'?", "options": ["Rocket Raccoon", "Drax", "Groot", "Star-Lord"], "answer": 2, "difficulty": "rookie"},
-  {"question": "What year did YouTube launch?", "options": ["2003", "2004", "2005", "2006"], "answer": 2, "difficulty": "veteran"},
-  {"question": "Which animated film features a clownfish named Marlin?", "options": ["Shark Tale", "Finding Nemo", "The Little Mermaid", "Moana"], "answer": 1, "difficulty": "rookie"},
-  {"question": "What is the highest-grossing film of all time (unadjusted)?", "options": ["Avengers: Endgame", "Avatar", "Titanic", "Star Wars: The Force Awakens"], "answer": 1, "difficulty": "veteran"},
-  {"question": "Who created Facebook?", "options": ["Steve Jobs", "Bill Gates", "Mark Zuckerberg", "Elon Musk"], "answer": 2, "difficulty": "rookie"},
-  {"question": "Which video game character collects gold rings?", "options": ["Mario", "Sonic", "Crash Bandicoot", "Pac-Man"], "answer": 1, "difficulty": "rookie"},
-  {"question": "What is the name of the coffee shop in 'Friends'?", "options": ["Central Perk", "The Max", "Café Nervosa", "Luke's Diner"], "answer": 0, "difficulty": "rookie"},
-  {"question": "Which rapper's real name is Marshall Mathers?", "options": ["Jay-Z", "Eminem", "Kanye West", "Drake"], "answer": 1, "difficulty": "veteran"},
-  {"question": "What does 'GG' mean in gaming?", "options": ["Go Go", "Good Game", "Get Going", "Great Goal"], "answer": 1, "difficulty": "rookie"},
-  {"question": "Which Disney princess has ice powers?", "options": ["Rapunzel", "Moana", "Elsa", "Merida"], "answer": 2, "difficulty": "rookie"},
-  {"question": "What is the name of Elon Musk's space company?", "options": ["Blue Origin", "SpaceX", "Virgin Galactic", "NASA"], "answer": 1, "difficulty": "rookie"},
-  {"question": "Which game features the character Master Chief?", "options": ["Call of Duty", "Halo", "Gears of War", "Destiny"], "answer": 1, "difficulty": "veteran"},
-  {"question": "Who sang 'Shape of You'?", "options": ["Justin Bieber", "Ed Sheeran", "Sam Smith", "Shawn Mendes"], "answer": 1, "difficulty": "rookie"},
-  {"question": "What color is Pikachu?", "options": ["Red", "Blue", "Yellow", "Green"], "answer": 2, "difficulty": "rookie"},
-  {"question": "Which show features dragons and the Iron Throne?", "options": ["The Witcher", "Lord of the Rings", "Game of Thrones", "Wheel of Time"], "answer": 2, "difficulty": "rookie"},
-  {"question": "What is TikTok known as in China?", "options": ["WeChat", "Douyin", "Weibo", "Baidu"], "answer": 1, "difficulty": "veteran"},
-  {"question": "Which superhero is from Krypton?", "options": ["Batman", "Spider-Man", "Superman", "Wonder Woman"], "answer": 2, "difficulty": "rookie"},
-  {"question": "What year did 'Fortnite Battle Royale' launch?", "options": ["2015", "2016", "2017", "2018"], "answer": 2, "difficulty": "veteran"},
-  {"question": "Who directed 'Inception'?", "options": ["Steven Spielberg", "Christopher Nolan", "James Cameron", "Ridley Scott"], "answer": 1, "difficulty": "veteran"},
-  {"question": "What is the name of Mario's brother?", "options": ["Wario", "Luigi", "Toad", "Waluigi"], "answer": 1, "difficulty": "rookie"},
-  {"question": "Which band performed 'Bohemian Rhapsody'?", "options": ["The Beatles", "Led Zeppelin", "Queen", "Pink Floyd"], "answer": 2, "difficulty": "rookie"},
-  {"question": "What does 'GOAT' stand for in slang?", "options": ["Get Out And Try", "Greatest Of All Time", "Go On A Trip", "Good Old Ancient Times"], "answer": 1, "difficulty": "rookie"},
-  {"question": "Which platform is known for short-form video content under 60 seconds?", "options": ["YouTube", "Vimeo", "TikTok", "Twitch"], "answer": 2, "difficulty": "rookie"},
-  {"question": "Who voices Shrek in the animated films?", "options": ["Eddie Murphy", "Mike Myers", "Cameron Diaz", "Antonio Banderas"], "answer": 1, "difficulty": "veteran"},
-  {"question": "What is the name of the Simpsons' neighbor?", "options": ["Ned Flanders", "Lenny Leonard", "Carl Carlson", "Moe Szyslak"], "answer": 0, "difficulty": "veteran"},
-  {"question": "Which console was released by Nintendo in 2017?", "options": ["Wii U", "Nintendo Switch", "3DS", "GameCube"], "answer": 1, "difficulty": "veteran"},
-  {"question": "Who is the voice of Elsa in Frozen?", "options": ["Kristen Bell", "Idina Menzel", "Mandy Moore", "Amy Adams"], "answer": 1, "difficulty": "veteran"},
-  {"question": "What emoji is most commonly used worldwide?", "options": ["Heart", "Thumbs Up", "Face with Tears of Joy", "Fire"], "answer": 2, "difficulty": "legend"},
-  {"question": "Which app was originally called 'Burbn'?", "options": ["Snapchat", "Twitter", "Instagram", "Pinterest"], "answer": 2, "difficulty": "legend"},
-  {"question": "What year was Reddit founded?", "options": ["2004", "2005", "2006", "2007"], "answer": 1, "difficulty": "legend"},
-  {"question": "Who created the comic book character Spider-Man?", "options": ["Bob Kane", "Stan Lee & Steve Ditko", "Jack Kirby", "Todd McFarlane"], "answer": 1, "difficulty": "veteran"},
-  {"question": "What is the name of the AI assistant in the movie 'Her'?", "options": ["Samantha", "Alexa", "Siri", "Cortana"], "answer": 0, "difficulty": "legend"},
-  {"question": "Which band's lead singer is Billie Joe Armstrong?", "options": ["Blink-182", "Fall Out Boy", "Green Day", "The Offspring"], "answer": 2, "difficulty": "veteran"},
-  {"question": "In Minecraft, what material do you need to build a Nether portal?", "options": ["Diamond", "Obsidian", "Bedrock", "Netherite"], "answer": 1, "difficulty": "veteran"},
-  {"question": "Which movie franchise features the DeLorean time machine?", "options": ["The Terminator", "Back to the Future", "Bill & Ted", "Doctor Who"], "answer": 1, "difficulty": "rookie"},
-  {"question": "What is the Konami Code sequence?", "options": ["Up Up Down Down Left Right Left Right B A", "A B Left Right Up Down", "Left Left Right Right Up Down A B", "Down Up Down Up Right Left B A"], "answer": 0, "difficulty": "legend"},
-  {"question": "Which TV show coined the phrase 'Winter is Coming'?", "options": ["The Witcher", "Game of Thrones", "Vikings", "The Last Kingdom"], "answer": 1, "difficulty": "rookie"},
-  {"question": "What was the first ever viral video?", "options": ["Charlie Bit My Finger", "Keyboard Cat", "Numa Numa", "Dancing Baby"], "answer": 3, "difficulty": "legend"},
-  {"question": "Which character is the main protagonist of 'The Legend of Zelda'?", "options": ["Zelda", "Link", "Ganondorf", "Epona"], "answer": 1, "difficulty": "veteran"},
-  {"question": "Who hosts 'The Daily Show' as of 2024?", "options": ["Trevor Noah", "Jon Stewart", "John Oliver", "Stephen Colbert"], "answer": 1, "difficulty": "legend"},
-  {"question": "What year was Minecraft officially released?", "options": ["2009", "2010", "2011", "2012"], "answer": 2, "difficulty": "veteran"},
-  {"question": "Which artist painted 'The Starry Night'?", "options": ["Claude Monet", "Vincent van Gogh", "Pablo Picasso", "Salvador Dalí"], "answer": 1, "difficulty": "rookie"},
-  {"question": "What is the highest level in Candy Crush Saga (approximately)?", "options": ["5,000", "10,000", "15,000", "20,000"], "answer": 2, "difficulty": "legend"},
-  {"question": "Which meme features a woman yelling at a cat?", "options": ["Grumpy Cat", "Nyan Cat", "Woman Yelling at Cat", "Keyboard Cat"], "answer": 2, "difficulty": "veteran"}
-]
+{
+  "category": "pop_culture",
+  "difficulty": "rookie",
+  "questions": [
+        ,
+    {
+      "id": "pc_021",
+      "question": "Which artist is known as 'The Weeknd'?",
+      "options": ["Drake", "Usher", "Abel Tesfaye", "Frank Ocean"],
+      "correct": 2,
+      "explanation": "The Weeknd’s real name is Abel Tesfaye."
+    },
+    {
+      "id": "pc_022",
+      "question": "Which show features the Stark, Lannister, and Targaryen families?",
+      "options": ["The Witcher", "Vikings", "Game of Thrones", "House of Cards"],
+      "correct": 2,
+      "explanation": "These noble houses appear in Game of Thrones."
+    },
+    {
+      "id": "pc_023",
+      "question": "Which app is known for disappearing photos?",
+      "options": ["Instagram", "Snapchat", "WhatsApp", "Messenger"],
+      "correct": 1,
+      "explanation": "Snapchat popularized self-deleting images."
+    },
+    {
+      "id": "pc_024",
+      "question": "Who is the main protagonist in The Legend of Zelda?",
+      "options": ["Zelda", "Link", "Ganon", "Epona"],
+      "correct": 1,
+      "explanation": "Players control Link in most Zelda games."
+    },
+    {
+      "id": "pc_025",
+      "question": "Which K-pop group released 'Dynamite'?",
+      "options": ["EXO", "BLACKPINK", "BTS", "SEVENTEEN"],
+      "correct": 2,
+      "explanation": "Dynamite became BTS’s first Billboard Hot 100 No.1."
+    },
+    {
+      "id": "pc_026",
+      "question": "Which movie features a DeLorean time machine?",
+      "options": ["The Matrix", "Back to the Future", "Ghostbusters", "Blade Runner"],
+      "correct": 1,
+      "explanation": "Doc Brown’s time machine is a modified DeLorean."
+    },
+    {
+      "id": "pc_027",
+      "question": "What is the name of the toy cowboy in Toy Story?",
+      "options": ["Buzz", "Jessie", "Woody", "Bullseye"],
+      "correct": 2,
+      "explanation": "Woody is Andy’s favorite toy."
+    },
+    {
+      "id": "pc_028",
+      "question": "Which pop star is famous for 'Like a Prayer'?",
+      "options": ["Madonna", "Cyndi Lauper", "Whitney Houston", "Cher"],
+      "correct": 0,
+      "explanation": "Like a Prayer was released in 1989."
+    },
+    {
+      "id": "pc_029",
+      "question": "Which streaming platform produced Stranger Things?",
+      "options": ["Amazon Prime", "Netflix", "Hulu", "Disney+"],
+      "correct": 1,
+      "explanation": "Stranger Things is a flagship Netflix series."
+    },
+    {
+      "id": "pc_030",
+      "question": "Which Pokémon is yellow and electric?",
+      "options": ["Charmander", "Squirtle", "Pikachu", "Bulbasaur"],
+      "correct": 2,
+      "explanation": "Pikachu is the franchise mascot."
+    },
+    {
+      "id": "pc_031",
+      "question": "Who directed Avatar (2009)?",
+      "options": ["Steven Spielberg", "Christopher Nolan", "James Cameron", "Peter Jackson"],
+      "correct": 2,
+      "explanation": "James Cameron created the sci-fi epic Avatar."
+    },
+    {
+      "id": "pc_032",
+      "question": "Which platform is known for live game streaming?",
+      "options": ["YouTube", "Kick", "Twitch", "Vimeo"],
+      "correct": 2,
+      "explanation": "Twitch dominates live gaming content."
+    },
+    {
+      "id": "pc_033",
+      "question": "Which singer released 'Rolling in the Deep'?",
+      "options": ["Adele", "Sam Smith", "Amy Winehouse", "Lana Del Rey"],
+      "correct": 0,
+      "explanation": "The song appears on Adele’s album 21."
+    },
+    {
+      "id": "pc_034",
+      "question": "What is the name of Shrek’s donkey friend?",
+      "options": ["Donkey", "Max", "Eddie", "Jack"],
+      "correct": 0,
+      "explanation": "He is simply called Donkey."
+    },
+    {
+      "id": "pc_035",
+      "question": "Which superhero uses a shield with a star?",
+      "options": ["Iron Man", "Captain America", "Thor", "Hawkeye"],
+      "correct": 1,
+      "explanation": "Captain America’s vibranium shield is iconic."
+    },
+    {
+      "id": "pc_036",
+      "question": "Which girl group sang 'Wannabe'?",
+      "options": ["Little Mix", "Spice Girls", "Fifth Harmony", "Destiny’s Child"],
+      "correct": 1,
+      "explanation": "Wannabe launched the Spice Girls in 1996."
+    },
+    {
+      "id": "pc_037",
+      "question": "Which series features a school called Hogwarts?",
+      "options": ["Percy Jackson", "Harry Potter", "Twilight", "Narnia"],
+      "correct": 1,
+      "explanation": "Hogwarts is the wizarding school in Harry Potter."
+    },
+    {
+      "id": "pc_038",
+      "question": "Which console is made by Sony?",
+      "options": ["Xbox", "PlayStation", "Switch", "GameCube"],
+      "correct": 1,
+      "explanation": "Sony produces the PlayStation line."
+    },
+    {
+      "id": "pc_039",
+      "question": "Which singer is known for 'Poker Face'?",
+      "options": ["Kesha", "Lady Gaga", "Rihanna", "Katy Perry"],
+      "correct": 1,
+      "explanation": "Poker Face was a major 2008 hit."
+    },
+    {
+      "id": "pc_040",
+      "question": "Which movie features the song 'Let It Go'?",
+      "options": ["Moana", "Frozen", "Tangled", "Encanto"],
+      "correct": 1,
+      "explanation": "Elsa sings Let It Go in Frozen."
+    }
+        ,
+    {
+      "id": "pc_041",
+      "question": "Which artist released the song 'Blinding Lights'?",
+      "options": ["Drake", "The Weeknd", "Post Malone", "Ed Sheeran"],
+      "correct": 1,
+      "explanation": "Blinding Lights became one of the longest-charting hits ever."
+    },
+    {
+      "id": "pc_042",
+      "question": "Which TV family lives in Springfield?",
+      "options": ["The Griffins", "The Simpsons", "The Belchers", "The Hills"],
+      "correct": 1,
+      "explanation": "The Simpsons are the famous animated family."
+    },
+    {
+      "id": "pc_043",
+      "question": "Which actor played Jack Sparrow?",
+      "options": ["Orlando Bloom", "Johnny Depp", "Brad Pitt", "Tom Cruise"],
+      "correct": 1,
+      "explanation": "Johnny Depp portrayed the pirate captain."
+    },
+    {
+      "id": "pc_044",
+      "question": "Which platform is famous for 280-character posts?",
+      "options": ["Facebook", "Threads", "Twitter", "Tumblr"],
+      "correct": 2,
+      "explanation": "Twitter increased its limit from 140 to 280 characters."
+    },
+    {
+      "id": "pc_045",
+      "question": "Which superhero can climb walls?",
+      "options": ["Hulk", "Spider-Man", "Flash", "Aquaman"],
+      "correct": 1,
+      "explanation": "Spider-Man has spider-like abilities."
+    },
+    {
+      "id": "pc_046",
+      "question": "Which band recorded 'Bohemian Rhapsody'?",
+      "options": ["Queen", "The Beatles", "Pink Floyd", "Eagles"],
+      "correct": 0,
+      "explanation": "Freddie Mercury wrote the song for Queen."
+    },
+    {
+      "id": "pc_047",
+      "question": "Which movie features dinosaurs in a theme park?",
+      "options": ["King Kong", "Jurassic Park", "Godzilla", "Jumanji"],
+      "correct": 1,
+      "explanation": "Jurassic Park was released in 1993."
+    },
+    {
+      "id": "pc_048",
+      "question": "Which character says 'D’oh!'?",
+      "options": ["Peter Griffin", "Homer Simpson", "Stan Smith", "Randy Marsh"],
+      "correct": 1,
+      "explanation": "Homer Simpson’s catchphrase is 'D’oh!'."
+    },
+    {
+      "id": "pc_049",
+      "question": "Which singer released the album 'Future Nostalgia'?",
+      "options": ["Dua Lipa", "Ariana Grande", "Taylor Swift", "Lizzo"],
+      "correct": 0,
+      "explanation": "Future Nostalgia was released in 2020."
+    },
+    {
+      "id": "pc_050",
+      "question": "Which game features building with blocks in a sandbox world?",
+      "options": ["Roblox", "Terraria", "Minecraft", "Fortnite"],
+      "correct": 2,
+      "explanation": "Minecraft is the best-selling video game ever."
+    },
+    {
+      "id": "pc_051",
+      "question": "Which wizard is known as the Boy Who Lived?",
+      "options": ["Ron Weasley", "Harry Potter", "Draco Malfoy", "Neville Longbottom"],
+      "correct": 1,
+      "explanation": "Harry survived Voldemort’s attack as a baby."
+    },
+    {
+      "id": "pc_052",
+      "question": "Which singer is called 'Queen Bey'?",
+      "options": ["Rihanna", "Beyoncé", "Nicki Minaj", "Doja Cat"],
+      "correct": 1,
+      "explanation": "Beyoncé’s fanbase uses this nickname."
+    },
+    {
+      "id": "pc_053",
+      "question": "Which animated movie features a talking snowman named Olaf?",
+      "options": ["Frozen", "Shrek", "Moana", "Coco"],
+      "correct": 0,
+      "explanation": "Olaf is Elsa and Anna’s cheerful snowman friend."
+    },
+    {
+      "id": "pc_054",
+      "question": "Which company created the iPhone?",
+      "options": ["Google", "Microsoft", "Apple", "Samsung"],
+      "correct": 2,
+      "explanation": "Apple introduced the first iPhone in 2007."
+    },
+    {
+      "id": "pc_055",
+      "question": "Which rapper released 'Lose Yourself'?",
+      "options": ["Eminem", "Jay-Z", "Nas", "Kanye West"],
+      "correct": 0,
+      "explanation": "Lose Yourself won an Academy Award."
+    },
+    {
+      "id": "pc_056",
+      "question": "Which movie features the quote 'Why so serious?'",
+      "options": ["Joker", "The Dark Knight", "Suicide Squad", "Batman Begins"],
+      "correct": 1,
+      "explanation": "Heath Ledger’s Joker says this line."
+    },
+    {
+      "id": "pc_057",
+      "question": "Which character carries a shield and hammer?",
+      "options": ["Thor", "Captain America", "Hulk", "Vision"],
+      "correct": 0,
+      "explanation": "Thor uses Mjolnir and later Stormbreaker."
+    },
+    {
+      "id": "pc_058",
+      "question": "Which platform is known for professional networking?",
+      "options": ["LinkedIn", "Instagram", "TikTok", "Reddit"],
+      "correct": 0,
+      "explanation": "LinkedIn focuses on careers and business."
+    },
+    {
+      "id": "pc_059",
+      "question": "Which singer released 'Shape of You'?",
+      "options": ["Shawn Mendes", "Ed Sheeran", "Justin Bieber", "Charlie Puth"],
+      "correct": 1,
+      "explanation": "Shape of You topped charts worldwide."
+    },
+    {
+      "id": "pc_060",
+      "question": "Which Disney character has a pet tiger named Rajah?",
+      "options": ["Jasmine", "Belle", "Ariel", "Mulan"],
+      "correct": 0,
+      "explanation": "Rajah is Princess Jasmine’s loyal companion."
+    }
+        ,
+    {
+      "id": "pc_061",
+      "question": "What is the real name of Black Panther in the MCU?",
+      "options": ["M'Baku", "T'Challa", "N'Jadaka", "Okoye"],
+      "correct": 1,
+      "explanation": "T’Challa is the king of Wakanda and the Black Panther."
+    },
+    {
+      "id": "pc_062",
+      "question": "Which Infinity Stone is located in the Tesseract?",
+      "options": ["Mind Stone", "Time Stone", "Space Stone", "Power Stone"],
+      "correct": 2,
+      "explanation": "The Tesseract contains the Space Stone."
+    },
+    {
+      "id": "pc_063",
+      "question": "Who is Luke Skywalker's father?",
+      "options": ["Obi-Wan Kenobi", "Han Solo", "Darth Vader", "Yoda"],
+      "correct": 2,
+      "explanation": "Darth Vader reveals this in The Empire Strikes Back."
+    },
+    {
+      "id": "pc_064",
+      "question": "What is the name of Han Solo’s ship?",
+      "options": ["Star Destroyer", "Millennium Falcon", "X-Wing", "Ghost"],
+      "correct": 1,
+      "explanation": "The Millennium Falcon made the Kessel Run in less than 12 parsecs."
+    },
+    {
+      "id": "pc_065",
+      "question": "Who is the captain of the USS Enterprise in Star Trek: The Next Generation?",
+      "options": ["James Kirk", "Jonathan Archer", "Jean-Luc Picard", "Kathryn Janeway"],
+      "correct": 2,
+      "explanation": "Picard commands the Enterprise-D."
+    },
+    {
+      "id": "pc_066",
+      "question": "Which MCU hero says 'I can do this all day'?",
+      "options": ["Iron Man", "Thor", "Captain America", "Hawkeye"],
+      "correct": 2,
+      "explanation": "This is Steve Rogers’ signature line."
+    },
+    {
+      "id": "pc_067",
+      "question": "What species is Chewbacca?",
+      "options": ["Ewok", "Wookiee", "Twi'lek", "Rodian"],
+      "correct": 1,
+      "explanation": "Chewbacca is a Wookiee from Kashyyyk."
+    },
+    {
+      "id": "pc_068",
+      "question": "What is Spock’s home planet?",
+      "options": ["Vulcan", "Romulus", "Qo'noS", "Andoria"],
+      "correct": 0,
+      "explanation": "Spock is half-Vulcan, half-human."
+    },
+    {
+      "id": "pc_069",
+      "question": "Who is the main villain in Avengers: Infinity War?",
+      "options": ["Ultron", "Thanos", "Loki", "Red Skull"],
+      "correct": 1,
+      "explanation": "Thanos seeks all six Infinity Stones."
+    },
+    {
+      "id": "pc_070",
+      "question": "What color is Mace Windu’s lightsaber?",
+      "options": ["Blue", "Green", "Purple", "Red"],
+      "correct": 2,
+      "explanation": "Samuel L. Jackson requested a purple blade."
+    },
+    {
+      "id": "pc_071",
+      "question": "What is the name of the android in Star Trek: The Next Generation?",
+      "options": ["Lore", "Data", "B-4", "Seven"],
+      "correct": 1,
+      "explanation": "Data serves as the Enterprise’s operations officer."
+    },
+    {
+      "id": "pc_072",
+      "question": "Which MCU film introduced Spider-Man?",
+      "options": ["Homecoming", "Civil War", "Infinity War", "Endgame"],
+      "correct": 1,
+      "explanation": "Spider-Man first appears in Captain America: Civil War."
+    },
+    {
+      "id": "pc_073",
+      "question": "Who trained Obi-Wan Kenobi?",
+      "options": ["Yoda", "Qui-Gon Jinn", "Mace Windu", "Anakin Skywalker"],
+      "correct": 1,
+      "explanation": "Qui-Gon was Obi-Wan’s Jedi Master."
+    },
+    {
+      "id": "pc_074",
+      "question": "What is the Federation’s primary mission in Star Trek?",
+      "options": ["Conquest", "Trade", "Exploration", "Mining"],
+      "correct": 2,
+      "explanation": "Starfleet’s goal is peaceful exploration."
+    },
+    {
+      "id": "pc_075",
+      "question": "Who is Tony Stark’s AI assistant before Friday?",
+      "options": ["Karen", "Jarvis", "Edith", "Vision"],
+      "correct": 1,
+      "explanation": "JARVIS later becomes Vision."
+    },
+    {
+      "id": "pc_076",
+      "question": "Which planet is Princess Leia from?",
+      "options": ["Naboo", "Alderaan", "Coruscant", "Hoth"],
+      "correct": 1,
+      "explanation": "Alderaan is destroyed by the Death Star."
+    },
+    {
+      "id": "pc_077",
+      "question": "What is the famous greeting used by Vulcans?",
+      "options": ["Live long and prosper", "Peace and long life", "Infinite diversity in infinite combinations", "Make it so"],
+      "correct": 0,
+      "explanation": "Spock popularized this phrase."
+    },
+    {
+      "id": "pc_078",
+      "question": "Which MCU character is the Scarlet Witch?",
+      "options": ["Natasha Romanoff", "Wanda Maximoff", "Carol Danvers", "Gamora"],
+      "correct": 1,
+      "explanation": "Wanda possesses chaos magic."
+    },
+    {
+      "id": "pc_079",
+      "question": "Who built C-3PO?",
+      "options": ["Luke Skywalker", "Anakin Skywalker", "Obi-Wan Kenobi", "Padmé Amidala"],
+      "correct": 1,
+      "explanation": "Anakin built him as a child."
+    },
+    {
+      "id": "pc_080",
+      "question": "Who is the security chief in Star Trek: The Next Generation?",
+      "options": ["Worf", "Riker", "Geordi", "Crusher"],
+      "correct": 0,
+      "explanation": "Worf is a Klingon officer."
+    }
+        ,
+    {
+      "id": "pc_081",
+      "question": "What is Thor’s hammer called?",
+      "options": ["Stormbreaker", "Mjolnir", "Gungnir", "Vanir"],
+      "correct": 1,
+      "explanation": "Mjolnir can only be lifted by those who are worthy."
+    },
+    {
+      "id": "pc_082",
+      "question": "Who is the founder of the Avengers in the MCU?",
+      "options": ["Nick Fury", "Iron Man", "Captain America", "Phil Coulson"],
+      "correct": 0,
+      "explanation": "Nick Fury initiates the Avengers Initiative."
+    },
+    {
+      "id": "pc_083",
+      "question": "What is Baby Yoda’s real name?",
+      "options": ["Grogu", "Din", "Yaddle", "Bendu"],
+      "correct": 0,
+      "explanation": "The Mandalorian reveals his name as Grogu."
+    },
+    {
+      "id": "pc_084",
+      "question": "Which Star Wars film features the first Death Star’s destruction?",
+      "options": ["A New Hope", "Return of the Jedi", "Rogue One", "The Force Awakens"],
+      "correct": 0,
+      "explanation": "Luke destroys it in Episode IV."
+    },
+    {
+      "id": "pc_085",
+      "question": "Who is the first officer of the Enterprise-D?",
+      "options": ["Data", "Riker", "Worf", "La Forge"],
+      "correct": 1,
+      "explanation": "William Riker serves as Picard’s Number One."
+    },
+    {
+      "id": "pc_086",
+      "question": "Which MCU character becomes worthy to lift Mjolnir in Endgame?",
+      "options": ["Hulk", "Iron Man", "Captain America", "Black Panther"],
+      "correct": 2,
+      "explanation": "Steve Rogers proves worthy during the final battle."
+    },
+    {
+      "id": "pc_087",
+      "question": "What is the name of the Mandalorian’s ship in early seasons?",
+      "options": ["Razor Crest", "Slave I", "Ghost", "Outrider"],
+      "correct": 0,
+      "explanation": "The Razor Crest is destroyed in Season 2."
+    },
+    {
+      "id": "pc_088",
+      "question": "What is the Klingon homeworld?",
+      "options": ["Qo'noS", "Vulcan", "Bajor", "Ferenginar"],
+      "correct": 0,
+      "explanation": "Qo'noS is the Klingon capital planet."
+    },
+    {
+      "id": "pc_089",
+      "question": "Who is Peter Quill in the MCU?",
+      "options": ["Star-Lord", "Nova", "Adam Warlock", "Drax"],
+      "correct": 0,
+      "explanation": "Peter Quill leads the Guardians of the Galaxy."
+    },
+    {
+      "id": "pc_090",
+      "question": "Which Jedi trained Anakin Skywalker?",
+      "options": ["Yoda", "Mace Windu", "Obi-Wan Kenobi", "Qui-Gon Jinn"],
+      "correct": 2,
+      "explanation": "Obi-Wan becomes Anakin’s master."
+    },
+    {
+      "id": "pc_091",
+      "question": "What is the name of the holodeck in Star Trek used for?",
+      "options": ["Medical treatment", "Training simulations", "Warp travel", "Weapon storage"],
+      "correct": 1,
+      "explanation": "The holodeck creates immersive simulations."
+    },
+    {
+      "id": "pc_092",
+      "question": "Which MCU character is known as the Sorcerer Supreme?",
+      "options": ["Wong", "Doctor Strange", "Ancient One", "Loki"],
+      "correct": 1,
+      "explanation": "Stephen Strange becomes Sorcerer Supreme."
+    },
+    {
+      "id": "pc_093",
+      "question": "What color are Sith lightsabers typically?",
+      "options": ["Blue", "Green", "Purple", "Red"],
+      "correct": 3,
+      "explanation": "Sith use red kyber crystals."
+    },
+    {
+      "id": "pc_094",
+      "question": "What is the Enterprise’s maximum speed called?",
+      "options": ["Hyperdrive", "Warp speed", "Slipstream", "Impulse"],
+      "correct": 1,
+      "explanation": "Warp drive allows faster-than-light travel."
+    },
+    {
+      "id": "pc_095",
+      "question": "Who sacrifices himself using the Infinity Stones in Endgame?",
+      "options": ["Thor", "Hulk", "Iron Man", "Hawkeye"],
+      "correct": 2,
+      "explanation": "Tony Stark snaps his fingers to defeat Thanos."
+    },
+    {
+      "id": "pc_096",
+      "question": "Which bounty hunter captures Han Solo?",
+      "options": ["Jango Fett", "Boba Fett", "Cad Bane", "Bossk"],
+      "correct": 1,
+      "explanation": "Boba Fett delivers him to Jabba the Hutt."
+    },
+    {
+      "id": "pc_097",
+      "question": "Who is the chief engineer of the Enterprise-D?",
+      "options": ["Scotty", "La Forge", "O'Brien", "Trip Tucker"],
+      "correct": 1,
+      "explanation": "Geordi La Forge runs engineering."
+    },
+    {
+      "id": "pc_098",
+      "question": "Which MCU character is a talking raccoon?",
+      "options": ["Groot", "Rocket", "Cosmo", "Howard"],
+      "correct": 1,
+      "explanation": "Rocket is a genetically modified raccoon."
+    },
+    {
+      "id": "pc_099",
+      "question": "What is the name of the desert planet where Anakin grew up?",
+      "options": ["Jakku", "Tatooine", "Geonosis", "Jedha"],
+      "correct": 1,
+      "explanation": "Anakin was a slave on Tatooine."
+    },
+    {
+      "id": "pc_100",
+      "question": "What is the Prime Directive in Star Trek about?",
+      "options": ["Time travel", "Non-interference", "Trade laws", "Military protocol"],
+      "correct": 1,
+      "explanation": "It forbids interference with less advanced civilizations."
+    }
+        ,
+    {
+      "id": "pc_101",
+      "question": "Which singer is known as the 'Material Girl'?",
+      "options": ["Madonna", "Britney Spears", "Lady Gaga", "Kylie Minogue"],
+      "correct": 0,
+      "explanation": "Madonna released Material Girl in 1984."
+    },
+    {
+      "id": "pc_102",
+      "question": "Which fast-food chain has a clown named Ronald as its mascot?",
+      "options": ["Burger King", "McDonald's", "KFC", "Wendy’s"],
+      "correct": 1,
+      "explanation": "Ronald McDonald represents the McDonald's brand."
+    },
+    {
+      "id": "pc_103",
+      "question": "Which social media platform is known for short dance videos?",
+      "options": ["Snapchat", "TikTok", "Pinterest", "LinkedIn"],
+      "correct": 1,
+      "explanation": "TikTok popularized viral short-form dance content."
+    },
+    {
+      "id": "pc_104",
+      "question": "What is the name of Mickey Mouse’s dog?",
+      "options": ["Goofy", "Pluto", "Max", "Chip"],
+      "correct": 1,
+      "explanation": "Pluto is Mickey’s loyal pet."
+    },
+    {
+      "id": "pc_105",
+      "question": "Which movie features a giant ship that hits an iceberg?",
+      "options": ["Poseidon", "Titanic", "Jaws", "The Perfect Storm"],
+      "correct": 1,
+      "explanation": "Titanic was directed by James Cameron."
+    },
+    {
+      "id": "pc_106",
+      "question": "Which toy line features characters like Optimus Prime?",
+      "options": ["G.I. Joe", "Transformers", "Power Rangers", "He-Man"],
+      "correct": 1,
+      "explanation": "Optimus Prime leads the Autobots."
+    },
+    {
+      "id": "pc_107",
+      "question": "Which artist sang 'Firework'?",
+      "options": ["Katy Perry", "Pink", "Rihanna", "Demi Lovato"],
+      "correct": 0,
+      "explanation": "Firework is one of Katy Perry’s biggest hits."
+    },
+    {
+      "id": "pc_108",
+      "question": "Which platform is known for user-created discussion communities called subreddits?",
+      "options": ["Discord", "Reddit", "Quora", "Medium"],
+      "correct": 1,
+      "explanation": "Reddit is organized into topic-based subreddits."
+    },
+    {
+      "id": "pc_109",
+      "question": "Which animated series features a character named SpongeBob?",
+      "options": ["Adventure Time", "SpongeBob SquarePants", "The Fairly OddParents", "Regular Show"],
+      "correct": 1,
+      "explanation": "SpongeBob lives in a pineapple under the sea."
+    },
+    {
+      "id": "pc_110",
+      "question": "Which singer released the album '1989'?",
+      "options": ["Taylor Swift", "Ariana Grande", "Billie Eilish", "Selena Gomez"],
+      "correct": 0,
+      "explanation": "1989 marked Taylor Swift’s pop transition."
+    },
+    {
+      "id": "pc_111",
+      "question": "Which video game character collects rings?",
+      "options": ["Mario", "Crash Bandicoot", "Sonic", "Kirby"],
+      "correct": 2,
+      "explanation": "Rings protect Sonic from damage."
+    },
+    {
+      "id": "pc_112",
+      "question": "Which movie features a boxing underdog named Rocky?",
+      "options": ["Raging Bull", "Creed", "Rocky", "Southpaw"],
+      "correct": 2,
+      "explanation": "Sylvester Stallone plays Rocky Balboa."
+    },
+    {
+      "id": "pc_113",
+      "question": "Which celebrity is known for the reality show about the Kardashian family?",
+      "options": ["Paris Hilton", "Kim Kardashian", "Cardi B", "Doja Cat"],
+      "correct": 1,
+      "explanation": "Keeping Up with the Kardashians made her famous."
+    },
+    {
+      "id": "pc_114",
+      "question": "Which app is represented by a ghost logo?",
+      "options": ["Snapchat", "Telegram", "Signal", "Viber"],
+      "correct": 0,
+      "explanation": "The ghost is called Ghostface Chillah."
+    },
+    {
+      "id": "pc_115",
+      "question": "Which boy band sang 'I Want It That Way'?",
+      "options": ["NSYNC", "Backstreet Boys", "Westlife", "Take That"],
+      "correct": 1,
+      "explanation": "The song was released in 1999."
+    },
+    {
+      "id": "pc_116",
+      "question": "Which princess loses a glass slipper?",
+      "options": ["Belle", "Aurora", "Cinderella", "Snow White"],
+      "correct": 2,
+      "explanation": "The slipper helps the prince find Cinderella."
+    },
+    {
+      "id": "pc_117",
+      "question": "Which actor played the Joker in The Dark Knight?",
+      "options": ["Joaquin Phoenix", "Jared Leto", "Heath Ledger", "Jack Nicholson"],
+      "correct": 2,
+      "explanation": "Heath Ledger won a posthumous Oscar for the role."
+    },
+    {
+      "id": "pc_118",
+      "question": "Which festival is famous for music and held in the California desert?",
+      "options": ["Glastonbury", "Lollapalooza", "Coachella", "Burning Man"],
+      "correct": 2,
+      "explanation": "Coachella is held annually in Indio, California."
+    },
+    {
+      "id": "pc_119",
+      "question": "Which streaming service created The Witcher series?",
+      "options": ["Netflix", "Amazon Prime", "HBO", "Disney+"],
+      "correct": 0,
+      "explanation": "The Witcher premiered on Netflix in 2019."
+    },
+    {
+      "id": "pc_120",
+      "question": "Which doll is known for her Dreamhouse and many careers?",
+      "options": ["Bratz", "Barbie", "Polly Pocket", "American Girl"],
+      "correct": 1,
+      "explanation": "Barbie debuted in 1959."
+    }
+        ,
+    {
+      "id": "pc_121",
+      "question": "Which artist is known for the hit song 'Bad Guy'?",
+      "options": ["Billie Eilish", "Olivia Rodrigo", "Halsey", "Lorde"],
+      "correct": 0,
+      "explanation": "Bad Guy helped Billie Eilish win multiple Grammys."
+    },
+    {
+      "id": "pc_122",
+      "question": "Which movie features blue Na’vi people on the planet Pandora?",
+      "options": ["Avatar", "John Carter", "Guardians of the Galaxy", "Valerian"],
+      "correct": 0,
+      "explanation": "Avatar was directed by James Cameron."
+    },
+    {
+      "id": "pc_123",
+      "question": "Which company created the PlayStation?",
+      "options": ["Nintendo", "Microsoft", "Sony", "Sega"],
+      "correct": 2,
+      "explanation": "Sony launched the first PlayStation in 1994."
+    },
+    {
+      "id": "pc_124",
+      "question": "Which snack is known for the slogan 'Once you pop, you can’t stop'?",
+      "options": ["Doritos", "Pringles", "Lays", "Cheetos"],
+      "correct": 1,
+      "explanation": "Pringles use this famous slogan."
+    },
+    {
+      "id": "pc_125",
+      "question": "Which singer released 'Rolling in the Deep'?",
+      "options": ["Adele", "Sam Smith", "Sia", "Duffy"],
+      "correct": 0,
+      "explanation": "The song appears on Adele’s album 21."
+    },
+    {
+      "id": "pc_126",
+      "question": "Which animated film features a house lifted by balloons?",
+      "options": ["Up", "Coco", "Inside Out", "Soul"],
+      "correct": 0,
+      "explanation": "Carl travels to Paradise Falls in Up."
+    },
+    {
+      "id": "pc_127",
+      "question": "Which messaging app has a paper plane logo?",
+      "options": ["WhatsApp", "Telegram", "Messenger", "Signal"],
+      "correct": 1,
+      "explanation": "Telegram uses the white paper plane icon."
+    },
+    {
+      "id": "pc_128",
+      "question": "Which band is fronted by Bono?",
+      "options": ["Coldplay", "U2", "Oasis", "Radiohead"],
+      "correct": 1,
+      "explanation": "Bono is the lead singer of U2."
+    },
+    {
+      "id": "pc_129",
+      "question": "Which character says 'To infinity and beyond!'?",
+      "options": ["Woody", "Buzz Lightyear", "Wall-E", "Lightning McQueen"],
+      "correct": 1,
+      "explanation": "Buzz Lightyear’s famous catchphrase."
+    },
+    {
+      "id": "pc_130",
+      "question": "Which sport is featured in the game FIFA?",
+      "options": ["Basketball", "American football", "Tennis", "Football (soccer)"],
+      "correct": 3,
+      "explanation": "FIFA is the world’s most popular football video game."
+    },
+    {
+      "id": "pc_131",
+      "question": "Which singer is known for 'Like a Prayer'?",
+      "options": ["Madonna", "Whitney Houston", "Cher", "Cyndi Lauper"],
+      "correct": 0,
+      "explanation": "Like a Prayer was released in 1989."
+    },
+    {
+      "id": "pc_132",
+      "question": "Which superhero is also known as the Man of Steel?",
+      "options": ["Batman", "Superman", "Thor", "Iron Man"],
+      "correct": 1,
+      "explanation": "Superman is from the planet Krypton."
+    },
+    {
+      "id": "pc_133",
+      "question": "Which TV show features dragons and the Iron Throne?",
+      "options": ["The Witcher", "House of the Dragon", "Game of Thrones", "Vikings"],
+      "correct": 2,
+      "explanation": "Game of Thrones is based on George R. R. Martin’s books."
+    },
+    {
+      "id": "pc_134",
+      "question": "Which company makes the Xbox?",
+      "options": ["Sony", "Nintendo", "Microsoft", "Valve"],
+      "correct": 2,
+      "explanation": "Microsoft launched the Xbox in 2001."
+    },
+    {
+      "id": "pc_135",
+      "question": "Which artist released 'Uptown Funk' with Mark Ronson?",
+      "options": ["Bruno Mars", "Pharrell Williams", "Usher", "Jason Derulo"],
+      "correct": 0,
+      "explanation": "Uptown Funk was a global hit in 2014."
+    },
+    {
+      "id": "pc_136",
+      "question": "Which fast-food chain is known for the Whopper?",
+      "options": ["McDonald's", "Burger King", "KFC", "Five Guys"],
+      "correct": 1,
+      "explanation": "The Whopper is Burger King’s signature burger."
+    },
+    {
+      "id": "pc_137",
+      "question": "Which fictional city is Batman’s home?",
+      "options": ["Metropolis", "Gotham", "Central City", "Star City"],
+      "correct": 1,
+      "explanation": "Gotham City is protected by Batman."
+    },
+    {
+      "id": "pc_138",
+      "question": "Which platform is known for live streaming by gamers?",
+      "options": ["Kick", "Twitch", "YouTube Kids", "Vimeo"],
+      "correct": 1,
+      "explanation": "Twitch is the leading game streaming platform."
+    },
+    {
+      "id": "pc_139",
+      "question": "Which singer released 'Drivers License'?",
+      "options": ["Olivia Rodrigo", "Billie Eilish", "Dua Lipa", "Doja Cat"],
+      "correct": 0,
+      "explanation": "Drivers License broke streaming records in 2021."
+    },
+    {
+      "id": "pc_140",
+      "question": "Which theme park is known as 'The Happiest Place on Earth'?",
+      "options": ["Universal Studios", "Disneyland", "Six Flags", "Europa-Park"],
+      "correct": 1,
+      "explanation": "Disneyland uses this famous tagline."
+    }
+        ,
+    {
+      "id": "pc_141",
+      "question": "Which artist is known for the song 'Shape of You'?",
+      "options": ["Ed Sheeran", "Shawn Mendes", "Justin Bieber", "Harry Styles"],
+      "correct": 0,
+      "explanation": "Shape of You became one of the most streamed songs ever."
+    },
+    {
+      "id": "pc_142",
+      "question": "Which movie features a theme park with cloned dinosaurs?",
+      "options": ["King Kong", "Jurassic Park", "Godzilla", "Rampage"],
+      "correct": 1,
+      "explanation": "Jurassic Park was directed by Steven Spielberg."
+    },
+    {
+      "id": "pc_143",
+      "question": "Which logo is a bitten apple?",
+      "options": ["Microsoft", "Apple", "Samsung", "Sony"],
+      "correct": 1,
+      "explanation": "The bitten apple is Apple’s iconic logo."
+    },
+    {
+      "id": "pc_144",
+      "question": "Which singer is known for 'Poker Face'?",
+      "options": ["Lady Gaga", "Katy Perry", "Rihanna", "Pink"],
+      "correct": 0,
+      "explanation": "Poker Face was released in 2008."
+    },
+    {
+      "id": "pc_145",
+      "question": "Which animated character lives in a pineapple under the sea?",
+      "options": ["Patrick", "SpongeBob", "Squidward", "Mr. Krabs"],
+      "correct": 1,
+      "explanation": "SpongeBob SquarePants is his full name."
+    },
+    {
+      "id": "pc_146",
+      "question": "Which superhero team includes Wonder Woman, Batman, and Superman?",
+      "options": ["Avengers", "Justice League", "X-Men", "Fantastic Four"],
+      "correct": 1,
+      "explanation": "They are core members of the Justice League."
+    },
+    {
+      "id": "pc_147",
+      "question": "Which platform is famous for 280-character posts?",
+      "options": ["Facebook", "Instagram", "Twitter", "Tumblr"],
+      "correct": 2,
+      "explanation": "Twitter increased the limit from 140 to 280 characters."
+    },
+    {
+      "id": "pc_148",
+      "question": "Which artist released the album 'Future Nostalgia'?",
+      "options": ["Dua Lipa", "Ariana Grande", "Taylor Swift", "Rita Ora"],
+      "correct": 0,
+      "explanation": "Future Nostalgia came out in 2020."
+    },
+    {
+      "id": "pc_149",
+      "question": "Which toy cowboy says 'There’s a snake in my boot!'?",
+      "options": ["Jessie", "Woody", "Bullseye", "Stinky Pete"],
+      "correct": 1,
+      "explanation": "Woody is voiced by Tom Hanks."
+    },
+    {
+      "id": "pc_150",
+      "question": "Which game features building and surviving with blocks?",
+      "options": ["Roblox", "Fortnite", "Minecraft", "Terraria"],
+      "correct": 2,
+      "explanation": "Minecraft is the best-selling video game of all time."
+    },
+    {
+      "id": "pc_151",
+      "question": "Which singer is known for 'Blinding Lights'?",
+      "options": ["The Weeknd", "Drake", "Post Malone", "Bruno Mars"],
+      "correct": 0,
+      "explanation": "Blinding Lights broke chart records."
+    },
+    {
+      "id": "pc_152",
+      "question": "Which movie features the quote 'I’ll be back'?",
+      "options": ["RoboCop", "The Terminator", "Die Hard", "Predator"],
+      "correct": 1,
+      "explanation": "Arnold Schwarzenegger says it as the Terminator."
+    },
+    {
+      "id": "pc_153",
+      "question": "Which fashion doll has a boyfriend named Ken?",
+      "options": ["Bratz", "Barbie", "Polly Pocket", "LOL Surprise"],
+      "correct": 1,
+      "explanation": "Ken debuted in 1961."
+    },
+    {
+      "id": "pc_154",
+      "question": "Which streaming platform is known for The Boys?",
+      "options": ["Netflix", "Disney+", "Amazon Prime Video", "Hulu"],
+      "correct": 2,
+      "explanation": "The Boys premiered on Amazon Prime Video."
+    },
+    {
+      "id": "pc_155",
+      "question": "Which singer is known as the 'King of Pop'?",
+      "options": ["Elvis Presley", "Michael Jackson", "Prince", "Usher"],
+      "correct": 1,
+      "explanation": "Michael Jackson earned this title."
+    },
+    {
+      "id": "pc_156",
+      "question": "Which city is home to Hollywood?",
+      "options": ["New York", "Los Angeles", "Miami", "Chicago"],
+      "correct": 1,
+      "explanation": "Hollywood is a district of Los Angeles."
+    },
+    {
+      "id": "pc_157",
+      "question": "Which character is known for eating spinach to gain strength?",
+      "options": ["Bluto", "Popeye", "Olive Oyl", "Felix"],
+      "correct": 1,
+      "explanation": "Spinach gives Popeye instant muscles."
+    },
+    {
+      "id": "pc_158",
+      "question": "Which artist released 'Hips Don’t Lie'?",
+      "options": ["Shakira", "Jennifer Lopez", "Beyoncé", "Rihanna"],
+      "correct": 0,
+      "explanation": "The song features Wyclef Jean."
+    },
+    {
+      "id": "pc_159",
+      "question": "Which video game plumber rescues Princess Peach?",
+      "options": ["Luigi", "Wario", "Mario", "Toad"],
+      "correct": 2,
+      "explanation": "Mario debuted in Donkey Kong."
+    },
+    {
+      "id": "pc_160",
+      "question": "Which show features a coffee shop called Central Perk?",
+      "options": ["How I Met Your Mother", "Friends", "Seinfeld", "The Office"],
+      "correct": 1,
+      "explanation": "Friends is set in New York City."
+    },
+    {
+      "id": "pc_161",
+      "question": "Which artist released 'Single Ladies'?",
+      "options": ["Beyoncé", "Rihanna", "Ciara", "Nicki Minaj"],
+      "correct": 0,
+      "explanation": "The song features the famous hand dance."
+    },
+    {
+      "id": "pc_162",
+      "question": "Which wizard has a lightning-shaped scar?",
+      "options": ["Ron Weasley", "Harry Potter", "Draco Malfoy", "Neville Longbottom"],
+      "correct": 1,
+      "explanation": "Harry received the scar as a baby."
+    },
+    {
+      "id": "pc_163",
+      "question": "Which company created the iPhone?",
+      "options": ["Google", "Samsung", "Apple", "Nokia"],
+      "correct": 2,
+      "explanation": "The first iPhone launched in 2007."
+    },
+    {
+      "id": "pc_164",
+      "question": "Which singer released 'Toxic'?",
+      "options": ["Britney Spears", "Christina Aguilera", "Pink", "Kesha"],
+      "correct": 0,
+      "explanation": "Toxic won a Grammy in 2005."
+    },
+    {
+      "id": "pc_165",
+      "question": "Which animated film features a snowman named Olaf?",
+      "options": ["Frozen", "Tangled", "Moana", "Encanto"],
+      "correct": 0,
+      "explanation": "Olaf loves warm hugs."
+    },
+    {
+      "id": "pc_166",
+      "question": "Which superhero is also called the Dark Knight?",
+      "options": ["Superman", "Batman", "Iron Man", "Black Panther"],
+      "correct": 1,
+      "explanation": "Batman protects Gotham at night."
+    },
+    {
+      "id": "pc_167",
+      "question": "Which platform is known for professional networking?",
+      "options": ["Facebook", "LinkedIn", "Instagram", "Snapchat"],
+      "correct": 1,
+      "explanation": "LinkedIn focuses on careers and business."
+    },
+    {
+      "id": "pc_168",
+      "question": "Which band sang 'Bohemian Rhapsody'?",
+      "options": ["Queen", "The Beatles", "Led Zeppelin", "Pink Floyd"],
+      "correct": 0,
+      "explanation": "Freddie Mercury was the lead singer."
+    },
+    {
+      "id": "pc_169",
+      "question": "Which character carries a shield with a star?",
+      "options": ["Captain America", "Winter Soldier", "Falcon", "Red Guardian"],
+      "correct": 0,
+      "explanation": "The vibranium shield belongs to Captain America."
+    },
+    {
+      "id": "pc_170",
+      "question": "Which movie features a DeLorean time machine?",
+      "options": ["Back to the Future", "Ghostbusters", "E.T.", "Blade Runner"],
+      "correct": 0,
+      "explanation": "Doc Brown builds the time machine."
+    },
+    {
+      "id": "pc_171",
+      "question": "Which singer is known for 'Umbrella'?",
+      "options": ["Rihanna", "Beyoncé", "Alicia Keys", "SZA"],
+      "correct": 0,
+      "explanation": "The song features Jay-Z."
+    },
+    {
+      "id": "pc_172",
+      "question": "Which animated character is a yellow electric mouse?",
+      "options": ["Pikachu", "Jigglypuff", "Charmander", "Eevee"],
+      "correct": 0,
+      "explanation": "Pikachu is the mascot of Pokémon."
+    },
+    {
+      "id": "pc_173",
+      "question": "Which company owns YouTube?",
+      "options": ["Meta", "Amazon", "Google", "Apple"],
+      "correct": 2,
+      "explanation": "Google acquired YouTube in 2006."
+    },
+    {
+      "id": "pc_174",
+      "question": "Which singer released 'Someone Like You'?",
+      "options": ["Adele", "Sam Smith", "Lana Del Rey", "Ellie Goulding"],
+      "correct": 0,
+      "explanation": "It appears on the album 21."
+    },
+    {
+      "id": "pc_175",
+      "question": "Which movie features a shark attacking a beach town?",
+      "options": ["Deep Blue Sea", "Jaws", "The Meg", "Open Water"],
+      "correct": 1,
+      "explanation": "Jaws was directed by Steven Spielberg."
+    },
+    {
+      "id": "pc_176",
+      "question": "Which console is made by Nintendo?",
+      "options": ["PlayStation 5", "Xbox Series X", "Switch", "Steam Deck"],
+      "correct": 2,
+      "explanation": "The Nintendo Switch launched in 2017."
+    },
+    {
+      "id": "pc_177",
+      "question": "Which artist is known for 'Levitating'?",
+      "options": ["Dua Lipa", "Doja Cat", "Ava Max", "Charli XCX"],
+      "correct": 0,
+      "explanation": "Levitating is from Future Nostalgia."
+    },
+    {
+      "id": "pc_178",
+      "question": "Which fairy tale features a girl with very long hair in a tower?",
+      "options": ["Rapunzel", "Cinderella", "Snow White", "Elsa"],
+      "correct": 0,
+      "explanation": "Rapunzel lets down her hair."
+    },
+    {
+      "id": "pc_179",
+      "question": "Which superhero can climb walls and shoot webs?",
+      "options": ["Ant-Man", "Spider-Man", "The Flash", "Daredevil"],
+      "correct": 1,
+      "explanation": "Spider-Man was bitten by a radioactive spider."
+    },
+    {
+      "id": "pc_180",
+      "question": "Which show features characters working at Dunder Mifflin?",
+      "options": ["Parks and Recreation", "Brooklyn Nine-Nine", "The Office", "Superstore"],
+      "correct": 2,
+      "explanation": "The Office is set in Scranton."
+    },
+    {
+      "id": "pc_181",
+      "question": "Which singer is known for 'Bad Romance'?",
+      "options": ["Lady Gaga", "Katy Perry", "Miley Cyrus", "Kesha"],
+      "correct": 0,
+      "explanation": "Bad Romance was released in 2009."
+    },
+    {
+      "id": "pc_182",
+      "question": "Which movie features a boxing club and the line 'The first rule is you do not talk about it'?",
+      "options": ["Rocky", "Fight Club", "Warrior", "Creed"],
+      "correct": 1,
+      "explanation": "Fight Club stars Brad Pitt and Edward Norton."
+    },
+    {
+      "id": "pc_183",
+      "question": "Which company created Windows?",
+      "options": ["Apple", "IBM", "Microsoft", "Intel"],
+      "correct": 2,
+      "explanation": "Windows launched in 1985."
+    },
+    {
+      "id": "pc_184",
+      "question": "Which singer released 'Firework'?",
+      "options": ["Katy Perry", "P!nk", "Kelly Clarkson", "Lizzo"],
+      "correct": 0,
+      "explanation": "Firework is from the album Teenage Dream."
+    },
+    {
+      "id": "pc_185",
+      "question": "Which animated film features a family of superheroes?",
+      "options": ["Megamind", "The Incredibles", "Despicable Me", "Big Hero 6"],
+      "correct": 1,
+      "explanation": "The Parr family are the main characters."
+    },
+    {
+      "id": "pc_186",
+      "question": "Which hero uses a lasso of truth?",
+      "options": ["Supergirl", "Wonder Woman", "Black Widow", "Storm"],
+      "correct": 1,
+      "explanation": "The Lasso of Truth forces honesty."
+    },
+    {
+      "id": "pc_187",
+      "question": "Which platform is known for short disappearing photos?",
+      "options": ["Instagram", "Snapchat", "BeReal", "Flickr"],
+      "correct": 1,
+      "explanation": "Snapchat popularized disappearing messages."
+    },
+    {
+      "id": "pc_188",
+      "question": "Which band released 'Smells Like Teen Spirit'?",
+      "options": ["Pearl Jam", "Nirvana", "Soundgarden", "Green Day"],
+      "correct": 1,
+      "explanation": "The song defined the grunge era."
+    },
+    {
+      "id": "pc_189",
+      "question": "Which superhero transforms when he gets angry?",
+      "options": ["Thor", "Hulk", "Venom", "Deadpool"],
+      "correct": 1,
+      "explanation": "Bruce Banner becomes the Hulk."
+    },
+    {
+      "id": "pc_190",
+      "question": "Which movie features a young lion named Simba?",
+      "options": ["Madagascar", "The Lion King", "Tarzan", "Bambi"],
+      "correct": 1,
+      "explanation": "Simba becomes king of the Pride Lands."
+    },
+    {
+      "id": "pc_191",
+      "question": "Which singer is known for 'Hello'?",
+      "options": ["Adele", "Sia", "Lorde", "Ellie Goulding"],
+      "correct": 0,
+      "explanation": "Hello was released in 2015."
+    },
+    {
+      "id": "pc_192",
+      "question": "Which game features dropping from a bus onto an island?",
+      "options": ["PUBG", "Fortnite", "Apex Legends", "Warzone"],
+      "correct": 1,
+      "explanation": "The Battle Bus is from Fortnite."
+    },
+    {
+      "id": "pc_193",
+      "question": "Which wizarding school does Harry Potter attend?",
+      "options": ["Beauxbatons", "Durmstrang", "Hogwarts", "Ilvermorny"],
+      "correct": 2,
+      "explanation": "Hogwarts is located in Scotland."
+    },
+    {
+      "id": "pc_194",
+      "question": "Which company makes the Galaxy smartphone?",
+      "options": ["Apple", "Samsung", "Huawei", "Xiaomi"],
+      "correct": 1,
+      "explanation": "Galaxy is Samsung’s flagship line."
+    },
+    {
+      "id": "pc_195",
+      "question": "Which singer released 'Shake It Off'?",
+      "options": ["Taylor Swift", "Katy Perry", "Meghan Trainor", "Camila Cabello"],
+      "correct": 0,
+      "explanation": "Shake It Off is from the album 1989."
+    },
+    {
+      "id": "pc_196",
+      "question": "Which animated film features emotions inside a girl’s mind?",
+      "options": ["Soul", "Inside Out", "Up", "Coco"],
+      "correct": 1,
+      "explanation": "Joy and Sadness are key characters."
+    },
+    {
+      "id": "pc_197",
+      "question": "Which hero runs very fast and is called the Scarlet Speedster?",
+      "options": ["Quicksilver", "The Flash", "Dash", "Sonic"],
+      "correct": 1,
+      "explanation": "The Flash protects Central City."
+    },
+    {
+      "id": "pc_198",
+      "question": "Which show features a chemistry teacher turned drug kingpin?",
+      "options": ["Ozark", "Narcos", "Breaking Bad", "Better Call Saul"],
+      "correct": 2,
+      "explanation": "Walter White is the main character."
+    },
+    {
+      "id": "pc_199",
+      "question": "Which singer is known for 'As It Was'?",
+      "options": ["Harry Styles", "Ed Sheeran", "Shawn Mendes", "Niall Horan"],
+      "correct": 0,
+      "explanation": "As It Was topped charts in 2022."
+    },
+    {
+      "id": "pc_200",
+      "question": "Which theme park features Cinderella’s Castle?",
+      "options": ["Disneyland", "Walt Disney World", "Universal Studios", "Tokyo Dome City"],
+      "correct": 1,
+      "explanation": "The castle is in Magic Kingdom at Walt Disney World."
+    }
+  ]
+}
