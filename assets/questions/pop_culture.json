@@ -3,6 +3,146 @@
   "difficulty": "rookie",
   "questions": [
     {
+      "id": "pc_001",
+      "question": "Which pop star released the album 'Thriller'?",
+      "options": ["Prince", "Michael Jackson", "Stevie Wonder", "Whitney Houston"],
+      "correct": 1,
+      "explanation": "Thriller is the best-selling album of all time."
+    },
+    {
+      "id": "pc_002",
+      "question": "What is the name of the magical land in The Chronicles of Narnia?",
+      "options": ["Middle-earth", "Narnia", "Westeros", "Oz"],
+      "correct": 1,
+      "explanation": "The children enter Narnia through a wardrobe."
+    },
+    {
+      "id": "pc_003",
+      "question": "Which video game features a character named Master Chief?",
+      "options": ["Call of Duty", "Halo", "Destiny", "Gears of War"],
+      "correct": 1,
+      "explanation": "Master Chief is the protagonist of the Halo series."
+    },
+    {
+      "id": "pc_004",
+      "question": "Which animated movie features a rat who wants to be a chef?",
+      "options": ["Flushed Away", "Ratatouille", "Stuart Little", "Zootopia"],
+      "correct": 1,
+      "explanation": "Remy dreams of cooking in a Paris restaurant."
+    },
+    {
+      "id": "pc_005",
+      "question": "Which singer is known for the song 'Crazy in Love'?",
+      "options": ["Rihanna", "Beyoncé", "Alicia Keys", "Mariah Carey"],
+      "correct": 1,
+      "explanation": "Crazy in Love features Jay-Z and was released in 2003."
+    },
+    {
+      "id": "pc_006",
+      "question": "What is the highest-grossing film franchise of all time?",
+      "options": ["Harry Potter", "Star Wars", "Marvel Cinematic Universe", "James Bond"],
+      "correct": 2,
+      "explanation": "The MCU has earned over $29 billion worldwide."
+    },
+    {
+      "id": "pc_007",
+      "question": "Which TV show features a group of friends in New York City?",
+      "options": ["Seinfeld", "Friends", "How I Met Your Mother", "All of these"],
+      "correct": 3,
+      "explanation": "All three shows are set in New York City."
+    },
+    {
+      "id": "pc_008",
+      "question": "What is the name of the coffee chain with a green mermaid logo?",
+      "options": ["Dunkin'", "Starbucks", "Costa", "Tim Hortons"],
+      "correct": 1,
+      "explanation": "The Starbucks siren is one of the most recognized logos."
+    },
+    {
+      "id": "pc_009",
+      "question": "Which band performed at the Super Bowl halftime show in 2023?",
+      "options": ["Coldplay", "Maroon 5", "Rihanna", "The Weeknd"],
+      "correct": 2,
+      "explanation": "Rihanna performed at Super Bowl LVII in 2023."
+    },
+    {
+      "id": "pc_010",
+      "question": "Which social media app uses the slogan 'What's happening?'",
+      "options": ["Facebook", "Instagram", "Twitter", "TikTok"],
+      "correct": 2,
+      "explanation": "Twitter uses this as its compose prompt."
+    },
+    {
+      "id": "pc_011",
+      "question": "Which movie won Best Picture at the 2020 Oscars?",
+      "options": ["1917", "Joker", "Parasite", "Once Upon a Time in Hollywood"],
+      "correct": 2,
+      "explanation": "Parasite was the first non-English film to win Best Picture."
+    },
+    {
+      "id": "pc_012",
+      "question": "Which singer released the hit 'Old Town Road'?",
+      "options": ["Post Malone", "Lil Nas X", "DaBaby", "Travis Scott"],
+      "correct": 1,
+      "explanation": "Old Town Road spent 19 weeks at No.1 on the Billboard Hot 100."
+    },
+    {
+      "id": "pc_013",
+      "question": "Which anime features a boy who wants to become Hokage?",
+      "options": ["Dragon Ball Z", "One Piece", "Naruto", "Bleach"],
+      "correct": 2,
+      "explanation": "Naruto Uzumaki dreams of becoming the village leader."
+    },
+    {
+      "id": "pc_014",
+      "question": "Which toy brand makes LEGO bricks?",
+      "options": ["Hasbro", "Mattel", "LEGO Group", "Bandai"],
+      "correct": 2,
+      "explanation": "The LEGO Group is a Danish company founded in 1932."
+    },
+    {
+      "id": "pc_015",
+      "question": "Which reality TV show features contestants on a deserted island?",
+      "options": ["Big Brother", "Survivor", "The Amazing Race", "Love Island"],
+      "correct": 1,
+      "explanation": "Survivor has been running since 2000."
+    },
+    {
+      "id": "pc_016",
+      "question": "Which musician is known as 'The Boss'?",
+      "options": ["Bob Dylan", "Bruce Springsteen", "Billy Joel", "Tom Petty"],
+      "correct": 1,
+      "explanation": "Bruce Springsteen earned this nickname early in his career."
+    },
+    {
+      "id": "pc_017",
+      "question": "Which movie features the quote 'Here's looking at you, kid'?",
+      "options": ["Gone with the Wind", "Casablanca", "The Godfather", "Citizen Kane"],
+      "correct": 1,
+      "explanation": "Humphrey Bogart says this iconic line in Casablanca."
+    },
+    {
+      "id": "pc_018",
+      "question": "Which app lets you send photos that disappear after viewing?",
+      "options": ["WhatsApp", "Snapchat", "Telegram", "Signal"],
+      "correct": 1,
+      "explanation": "Snapchat pioneered disappearing messages."
+    },
+    {
+      "id": "pc_019",
+      "question": "Which Disney princess has ice powers?",
+      "options": ["Rapunzel", "Moana", "Elsa", "Merida"],
+      "correct": 2,
+      "explanation": "Elsa can create ice and snow in Frozen."
+    },
+    {
+      "id": "pc_020",
+      "question": "Which rock band is known for 'Stairway to Heaven'?",
+      "options": ["The Rolling Stones", "Led Zeppelin", "Pink Floyd", "The Who"],
+      "correct": 1,
+      "explanation": "Led Zeppelin released it on their 1971 album."
+    },
+    {
       "id": "pc_021",
       "question": "Which artist is known as 'The Weeknd'?",
       "options": ["Drake", "Usher", "Abel Tesfaye", "Frank Ocean"],

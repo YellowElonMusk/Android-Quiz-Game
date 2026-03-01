@@ -15,7 +15,6 @@ class QuestionService {
     final decoded = json.decode(jsonString);
 
     List<dynamic> jsonList;
-    Difficulty? fileDifficulty;
 
     if (decoded is List) {
       // Old format: flat array of question objects
@@ -23,23 +22,12 @@ class QuestionService {
     } else if (decoded is Map<String, dynamic>) {
       // New format: wrapper object with "questions" array
       jsonList = decoded['questions'] as List<dynamic>;
-      final diffStr = decoded['difficulty'] as String?;
-      if (diffStr != null) {
-        fileDifficulty = Difficulty.values.firstWhere(
-          (d) => d.name == diffStr,
-          orElse: () => Difficulty.rookie,
-        );
-      }
     } else {
       jsonList = [];
     }
 
     _questions[category] = jsonList
-        .map((q) => Question.fromJson(
-              q as Map<String, dynamic>,
-              category,
-              defaultDifficulty: fileDifficulty,
-            ))
+        .map((q) => Question.fromJson(q as Map<String, dynamic>, category))
         .toList();
   }
 
@@ -64,31 +52,18 @@ class QuestionService {
     }
   }
 
+  /// Returns a shuffled list of questions for a match.
+  /// Difficulty controls how many options are shown (2 or 4),
+  /// not which questions are picked.
   List<Question> getQuestionsForMatch(
-    QuizCategory category,
-    Difficulty matchDifficulty, {
+    QuizCategory category, {
     int count = 30,
   }) {
     final categoryQuestions = _questions[category] ?? [];
     if (categoryQuestions.isEmpty) return [];
 
-    List<Question> filtered;
-    switch (matchDifficulty) {
-      case Difficulty.rookie:
-        filtered = categoryQuestions
-            .where((q) => q.difficulty == Difficulty.rookie)
-            .toList();
-      case Difficulty.veteran:
-        filtered = categoryQuestions
-            .where((q) =>
-                q.difficulty == Difficulty.rookie ||
-                q.difficulty == Difficulty.veteran)
-            .toList();
-      case Difficulty.legend:
-        filtered = List.from(categoryQuestions);
-    }
-
-    filtered.shuffle(_random);
-    return filtered.take(count).toList();
+    final shuffled = List<Question>.from(categoryQuestions);
+    shuffled.shuffle(_random);
+    return shuffled.take(count).toList();
   }
 }

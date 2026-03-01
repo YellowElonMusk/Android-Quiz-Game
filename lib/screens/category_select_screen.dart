@@ -17,7 +17,7 @@ class CategorySelectScreen extends StatefulWidget {
 }
 
 class _CategorySelectScreenState extends State<CategorySelectScreen> {
-  Difficulty _selectedDifficulty = Difficulty.rookie;
+  Difficulty _selectedDifficulty = Difficulty.easy;
 
   static const _categoryIcons = {
     QuizCategory.popCulture: Icons.star,
@@ -56,7 +56,7 @@ class _CategorySelectScreenState extends State<CategorySelectScreen> {
             child: Row(
               children: Difficulty.values.map((d) {
                 final isSelected = _selectedDifficulty == d;
-                final label = d.name[0].toUpperCase() + d.name.substring(1);
+                final label = '${d.displayName} (${d.optionCount} choices)';
                 return Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -217,11 +217,9 @@ class _CategorySelectScreenState extends State<CategorySelectScreen> {
 
   Color _difficultyColor(Difficulty d) {
     switch (d) {
-      case Difficulty.rookie:
+      case Difficulty.easy:
         return Colors.green;
-      case Difficulty.veteran:
-        return Colors.orange;
-      case Difficulty.legend:
+      case Difficulty.hard:
         return Colors.red;
     }
   }

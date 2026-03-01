@@ -13,47 +13,37 @@ enum QuizCategory {
   const QuizCategory(this.displayName, this.isPaid);
 }
 
-enum Difficulty { rookie, veteran, legend }
+enum Difficulty {
+  easy(2, 'Easy'),
+  hard(4, 'Hard');
+
+  final int optionCount;
+  final String displayName;
+  const Difficulty(this.optionCount, this.displayName);
+}
 
 class Question {
   final String text;
   final List<String> options;
   final int correctIndex;
   final QuizCategory category;
-  final Difficulty difficulty;
 
   const Question({
     required this.text,
     required this.options,
     required this.correctIndex,
     required this.category,
-    required this.difficulty,
   });
 
-  factory Question.fromJson(
-    Map<String, dynamic> json,
-    QuizCategory category, {
-    Difficulty? defaultDifficulty,
-  }) {
+  factory Question.fromJson(Map<String, dynamic> json, QuizCategory category) {
     // Support both "answer" (old format) and "correct" (new format)
     final correctIndex = (json['correct'] ?? json['answer']) as int;
-
-    // Per-question difficulty if present, otherwise fall back to the
-    // file-level default (from the wrapper object), or rookie.
-    final difficultyStr = json['difficulty'] as String?;
-    final difficulty = difficultyStr != null
-        ? Difficulty.values.firstWhere(
-            (d) => d.name == difficultyStr,
-            orElse: () => defaultDifficulty ?? Difficulty.rookie,
-          )
-        : defaultDifficulty ?? Difficulty.rookie;
 
     return Question(
       text: json['question'] as String,
       options: List<String>.from(json['options'] as List),
       correctIndex: correctIndex,
       category: category,
-      difficulty: difficulty,
     );
   }
 }

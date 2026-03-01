@@ -50,10 +50,7 @@ class _FightScreenState extends State<FightScreen> {
   void initState() {
     super.initState();
     _combat = CombatState();
-    _questions = widget.questionService.getQuestionsForMatch(
-      widget.category,
-      widget.difficulty,
-    );
+    _questions = widget.questionService.getQuestionsForMatch(widget.category);
     _showRoundStart();
   }
 
@@ -198,10 +195,7 @@ class _FightScreenState extends State<FightScreen> {
 
     if (_questionIndex >= _questions.length) {
       // Ran out of questions — re-shuffle
-      _questions = widget.questionService.getQuestionsForMatch(
-        widget.category,
-        widget.difficulty,
-      );
+      _questions = widget.questionService.getQuestionsForMatch(widget.category);
       _questionIndex = 0;
     }
   }
@@ -284,6 +278,7 @@ class _FightScreenState extends State<FightScreen> {
                 child: QuestionPanel(
                   question: _questions[_questionIndex],
                   onAnswer: _onAnswer,
+                  difficulty: widget.difficulty,
                 ),
               ),
           ],

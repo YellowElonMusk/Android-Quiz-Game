@@ -1,16 +1,19 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../models/question.dart';
 
 class QuestionPanel extends StatefulWidget {
   final Question question;
   final ValueChanged<int> onAnswer;
+  final Difficulty difficulty;
   final int timeLimit;
 
   const QuestionPanel({
     super.key,
     required this.question,
     required this.onAnswer,
+    required this.difficulty,
     this.timeLimit = 15,
   });
 
@@ -24,10 +27,18 @@ class _QuestionPanelState extends State<QuestionPanel> {
   Timer? _timer;
   bool _answered = false;
 
+  /// The original indices of the options being displayed.
+  /// For hard mode this is [0,1,2,3]. For easy mode it's 2 indices
+  /// (always includes the correct answer).
+  late List<int> _visibleIndices;
+
+  final Random _random = Random();
+
   @override
   void initState() {
     super.initState();
     _timeRemaining = widget.timeLimit;
+    _buildVisibleIndices();
     _startTimer();
   }
 
@@ -39,7 +50,26 @@ class _QuestionPanelState extends State<QuestionPanel> {
       _selectedIndex = null;
       _answered = false;
       _timeRemaining = widget.timeLimit;
+      _buildVisibleIndices();
       _startTimer();
+    }
+  }
+
+  void _buildVisibleIndices() {
+    final optionCount = widget.difficulty.optionCount;
+    final totalOptions = widget.question.options.length;
+    final correct = widget.question.correctIndex;
+
+    if (optionCount >= totalOptions) {
+      // Hard mode: show all options
+      _visibleIndices = List.generate(totalOptions, (i) => i);
+    } else {
+      // Easy mode: pick the correct answer + (optionCount-1) random wrong ones
+      final wrongIndices =
+          List.generate(totalOptions, (i) => i).where((i) => i != correct).toList();
+      wrongIndices.shuffle(_random);
+      _visibleIndices = [correct, ...wrongIndices.take(optionCount - 1)];
+      _visibleIndices.sort(); // keep original order so positions stay consistent
     }
   }
 
@@ -68,21 +98,24 @@ class _QuestionPanelState extends State<QuestionPanel> {
     super.dispose();
   }
 
-  void _selectAnswer(int index) {
+  void _selectAnswer(int originalIndex) {
     if (_answered) return;
     _answered = true;
     _timer?.cancel();
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = originalIndex;
     });
     Future.delayed(const Duration(milliseconds: 600), () {
-      if (mounted) widget.onAnswer(index);
+      if (mounted) widget.onAnswer(originalIndex);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final labels = ['A', 'B', 'C', 'D'];
+    final count = _visibleIndices.length;
+    final crossAxisCount = count <= 2 ? 1 : 2;
+    final aspectRatio = count <= 2 ? 5.0 : 3.0;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -134,17 +167,17 @@ class _QuestionPanelState extends State<QuestionPanel> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
-          // Options grid 2x2
+          // Options grid
           GridView.count(
-            crossAxisCount: 2,
+            crossAxisCount: crossAxisCount,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             mainAxisSpacing: 8,
             crossAxisSpacing: 8,
-            childAspectRatio: 3.0,
-            children: List.generate(4, (i) {
-              final isSelected = _selectedIndex == i;
-              final isCorrect = i == widget.question.correctIndex;
+            childAspectRatio: aspectRatio,
+            children: _visibleIndices.map((origIdx) {
+              final isSelected = _selectedIndex == origIdx;
+              final isCorrect = origIdx == widget.question.correctIndex;
               final showResult = _answered;
 
               Color bgColor = Colors.grey[800]!;
@@ -157,7 +190,7 @@ class _QuestionPanelState extends State<QuestionPanel> {
               }
 
               return GestureDetector(
-                onTap: () => _selectAnswer(i),
+                onTap: () => _selectAnswer(origIdx),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   decoration: BoxDecoration(
@@ -171,7 +204,7 @@ class _QuestionPanelState extends State<QuestionPanel> {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
-                    '${labels[i]}) ${widget.question.options[i]}',
+                    '${labels[origIdx]}) ${widget.question.options[origIdx]}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 13,
@@ -183,7 +216,7 @@ class _QuestionPanelState extends State<QuestionPanel> {
                   ),
                 ),
               );
-            }),
+            }).toList(),
           ),
         ],
       ),

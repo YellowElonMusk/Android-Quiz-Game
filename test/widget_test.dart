@@ -77,19 +77,27 @@ void main() {
     });
   });
 
+  group('Difficulty', () {
+    test('easy mode shows 2 options', () {
+      expect(Difficulty.easy.optionCount, 2);
+    });
+
+    test('hard mode shows 4 options', () {
+      expect(Difficulty.hard.optionCount, 4);
+    });
+  });
+
   group('Question', () {
     test('fromJson parses old format (answer key)', () {
       final json = {
         'question': 'Test question?',
         'options': ['A', 'B', 'C', 'D'],
         'answer': 2,
-        'difficulty': 'veteran',
       };
       final q = Question.fromJson(json, QuizCategory.popCulture);
       expect(q.text, 'Test question?');
       expect(q.options.length, 4);
       expect(q.correctIndex, 2);
-      expect(q.difficulty, Difficulty.veteran);
       expect(q.category, QuizCategory.popCulture);
     });
 
@@ -101,30 +109,11 @@ void main() {
         'correct': 1,
         'explanation': 'Some explanation',
       };
-      final q = Question.fromJson(
-        json,
-        QuizCategory.popCulture,
-        defaultDifficulty: Difficulty.rookie,
-      );
+      final q = Question.fromJson(json, QuizCategory.popCulture);
       expect(q.text, 'New format question?');
       expect(q.options.length, 4);
       expect(q.correctIndex, 1);
-      expect(q.difficulty, Difficulty.rookie);
       expect(q.category, QuizCategory.popCulture);
-    });
-
-    test('fromJson uses defaultDifficulty when no per-question difficulty', () {
-      final json = {
-        'question': 'No difficulty field?',
-        'options': ['A', 'B', 'C', 'D'],
-        'correct': 0,
-      };
-      final q = Question.fromJson(
-        json,
-        QuizCategory.worldHistory,
-        defaultDifficulty: Difficulty.legend,
-      );
-      expect(q.difficulty, Difficulty.legend);
     });
   });
 
