@@ -30,16 +30,30 @@ class Question {
     required this.difficulty,
   });
 
-  factory Question.fromJson(Map<String, dynamic> json, QuizCategory category) {
+  factory Question.fromJson(
+    Map<String, dynamic> json,
+    QuizCategory category, {
+    Difficulty? defaultDifficulty,
+  }) {
+    // Support both "answer" (old format) and "correct" (new format)
+    final correctIndex = (json['correct'] ?? json['answer']) as int;
+
+    // Per-question difficulty if present, otherwise fall back to the
+    // file-level default (from the wrapper object), or rookie.
+    final difficultyStr = json['difficulty'] as String?;
+    final difficulty = difficultyStr != null
+        ? Difficulty.values.firstWhere(
+            (d) => d.name == difficultyStr,
+            orElse: () => defaultDifficulty ?? Difficulty.rookie,
+          )
+        : defaultDifficulty ?? Difficulty.rookie;
+
     return Question(
       text: json['question'] as String,
       options: List<String>.from(json['options'] as List),
-      correctIndex: json['answer'] as int,
+      correctIndex: correctIndex,
       category: category,
-      difficulty: Difficulty.values.firstWhere(
-        (d) => d.name == (json['difficulty'] as String? ?? 'rookie'),
-        orElse: () => Difficulty.rookie,
-      ),
+      difficulty: difficulty,
     );
   }
 }

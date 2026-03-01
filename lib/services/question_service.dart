@@ -12,10 +12,34 @@ class QuestionService {
 
     final fileName = _categoryToFileName(category);
     final jsonString = await rootBundle.loadString('assets/questions/$fileName');
-    final List<dynamic> jsonList = json.decode(jsonString) as List<dynamic>;
+    final decoded = json.decode(jsonString);
+
+    List<dynamic> jsonList;
+    Difficulty? fileDifficulty;
+
+    if (decoded is List) {
+      // Old format: flat array of question objects
+      jsonList = decoded;
+    } else if (decoded is Map<String, dynamic>) {
+      // New format: wrapper object with "questions" array
+      jsonList = decoded['questions'] as List<dynamic>;
+      final diffStr = decoded['difficulty'] as String?;
+      if (diffStr != null) {
+        fileDifficulty = Difficulty.values.firstWhere(
+          (d) => d.name == diffStr,
+          orElse: () => Difficulty.rookie,
+        );
+      }
+    } else {
+      jsonList = [];
+    }
 
     _questions[category] = jsonList
-        .map((json) => Question.fromJson(json as Map<String, dynamic>, category))
+        .map((q) => Question.fromJson(
+              q as Map<String, dynamic>,
+              category,
+              defaultDifficulty: fileDifficulty,
+            ))
         .toList();
   }
 

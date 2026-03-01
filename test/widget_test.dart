@@ -78,7 +78,7 @@ void main() {
   });
 
   group('Question', () {
-    test('fromJson parses correctly', () {
+    test('fromJson parses old format (answer key)', () {
       final json = {
         'question': 'Test question?',
         'options': ['A', 'B', 'C', 'D'],
@@ -91,6 +91,40 @@ void main() {
       expect(q.correctIndex, 2);
       expect(q.difficulty, Difficulty.veteran);
       expect(q.category, QuizCategory.popCulture);
+    });
+
+    test('fromJson parses new format (correct key)', () {
+      final json = {
+        'id': 'pc_001',
+        'question': 'New format question?',
+        'options': ['A', 'B', 'C', 'D'],
+        'correct': 1,
+        'explanation': 'Some explanation',
+      };
+      final q = Question.fromJson(
+        json,
+        QuizCategory.popCulture,
+        defaultDifficulty: Difficulty.rookie,
+      );
+      expect(q.text, 'New format question?');
+      expect(q.options.length, 4);
+      expect(q.correctIndex, 1);
+      expect(q.difficulty, Difficulty.rookie);
+      expect(q.category, QuizCategory.popCulture);
+    });
+
+    test('fromJson uses defaultDifficulty when no per-question difficulty', () {
+      final json = {
+        'question': 'No difficulty field?',
+        'options': ['A', 'B', 'C', 'D'],
+        'correct': 0,
+      };
+      final q = Question.fromJson(
+        json,
+        QuizCategory.worldHistory,
+        defaultDifficulty: Difficulty.legend,
+      );
+      expect(q.difficulty, Difficulty.legend);
     });
   });
 
