@@ -83,18 +83,18 @@ class MatchstickPainter extends CustomPainter {
 
   void _drawBody(Canvas canvas, Size size, double dir) {
     final bodyPaint = Paint()
-      ..color = Colors.black
+      ..color = const Color(0xFFF0E0B0) // warm parchment — visible on dark bg
       ..strokeWidth = 4.0
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
     final headPaint = Paint()
-      ..color = Colors.black
+      ..color = const Color(0xFFB89060) // warm tan outline
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3.0;
 
     final headFillPaint = Paint()
-      ..color = Colors.white
+      ..color = const Color(0xFFF5E6C8) // warm skin fill
       ..style = PaintingStyle.fill;
 
     final hairPaint = Paint()
@@ -111,7 +111,7 @@ class MatchstickPainter extends CustomPainter {
 
     // Eyes - small dots
     final eyePaint = Paint()
-      ..color = Colors.black
+      ..color = const Color(0xFF2A1A00) // dark brown
       ..style = PaintingStyle.fill;
     canvas.drawCircle(
       headCenter + Offset(dir * 4 * scale, -2 * scale),
