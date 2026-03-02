@@ -47,7 +47,7 @@ class _FighterWidgetState extends State<FighterWidget>
   Duration _getDuration(AnimationState state) {
     switch (state) {
       case AnimationState.idle:
-        return const Duration(milliseconds: 1200);
+        return const Duration(milliseconds: 900);
       case AnimationState.punch:
         return const Duration(milliseconds: 400);
       case AnimationState.kick:

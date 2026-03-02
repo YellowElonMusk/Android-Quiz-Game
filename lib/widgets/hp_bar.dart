@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HpBar extends StatelessWidget {
   final double percent;
@@ -17,7 +18,7 @@ class HpBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hpColor = percent > 0.5
-        ? color
+        ? const Color(0xFF00FF00)
         : percent > 0.25
             ? Colors.orange
             : Colors.red;
@@ -25,48 +26,66 @@ class HpBar extends StatelessWidget {
     return Column(
       crossAxisAlignment:
           alignRight ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          label,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Container(
-          width: 140,
-          height: 16,
-          decoration: BoxDecoration(
-            color: Colors.grey[800],
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.white24, width: 1),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(7),
-            child: Align(
-              alignment:
-                  alignRight ? Alignment.centerRight : Alignment.centerLeft,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeOutCubic,
-                width: 140 * percent.clamp(0.0, 1.0),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [hpColor.withValues(alpha: 0.8), hpColor],
-                  ),
-                ),
-              ),
+          label.toUpperCase(),
+          style: GoogleFonts.pressStart2p(
+            textStyle: TextStyle(
+              color: hpColor,
+              fontSize: 7,
             ),
           ),
         ),
-        const SizedBox(height: 2),
-        Text(
-          '${(percent * 500).round()} / 500',
-          style: TextStyle(
-            color: Colors.grey[400],
-            fontSize: 10,
+        const SizedBox(height: 3),
+        Container(
+          width: 130,
+          height: 16,
+          decoration: BoxDecoration(
+            color: Colors.black,
+            border: Border.all(
+              color: hpColor.withValues(alpha: 0.8),
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: hpColor.withValues(alpha: 0.3),
+                blurRadius: 6,
+              ),
+            ],
+          ),
+          child: Stack(
+            children: [
+              // Filled HP
+              Align(
+                alignment:
+                    alignRight ? Alignment.centerRight : Alignment.centerLeft,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeOut,
+                  width: 126 * percent.clamp(0.0, 1.0),
+                  color: hpColor,
+                ),
+              ),
+              // Segment dividers
+              Row(
+                children: List.generate(
+                  10,
+                  (i) => Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          right: i < 9
+                              ? const BorderSide(
+                                  color: Colors.black, width: 2)
+                              : BorderSide.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],

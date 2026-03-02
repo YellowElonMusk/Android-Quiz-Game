@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/character.dart';
 import '../models/combat.dart';
 import '../services/storage_service.dart';
@@ -24,158 +25,236 @@ class _CharacterSelectScreenState extends State<CharacterSelectScreen> {
   @override
   Widget build(BuildContext context) {
     final isPaid = widget.storageService.isPaid;
+    final character = GameCharacter.roster[_selectedIndex];
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1A2E),
-      appBar: AppBar(
-        title: const Text('SELECT FIGHTER'),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        titleTextStyle: const TextStyle(
-          color: Colors.yellowAccent,
-          fontSize: 22,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 3,
-        ),
-      ),
-      body: Column(
+      backgroundColor: const Color(0xFF04020C),
+      body: Stack(
         children: [
-          const SizedBox(height: 16),
-          // Preview of selected character
-          SizedBox(
-            height: 200,
-            child: FighterWidget(
-              character: GameCharacter.roster[_selectedIndex],
-              animState: AnimationState.idle,
-              facingRight: true,
-            ),
+          // Neon top border
+          Positioned(
+            top: 0, left: 0, right: 0, height: 3,
+            child: Container(color: const Color(0xFF00FFFF)),
           ),
-          Text(
-            GameCharacter.roster[_selectedIndex].name,
-            style: TextStyle(
-              color: GameCharacter.roster[_selectedIndex].accentColor,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            GameCharacter.roster[_selectedIndex].hairStyle,
-            style: const TextStyle(color: Colors.white54, fontSize: 14),
-          ),
-          const SizedBox(height: 32),
-          // Character grid
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                childAspectRatio: 1.4,
-              ),
-              itemCount: GameCharacter.roster.length,
-              itemBuilder: (context, index) {
-                final character = GameCharacter.roster[index];
-                final isLocked = character.isPaid && !isPaid;
-                final isSelected = _selectedIndex == index;
-
-                return GestureDetector(
-                  onTap: () {
-                    if (isLocked) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Unlock all characters for \$2.99!'),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-                      return;
-                    }
-                    setState(() => _selectedIndex = index);
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? character.accentColor.withValues(alpha: 0.2)
-                          : Colors.grey[900],
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: isSelected
-                            ? character.accentColor
-                            : Colors.white12,
-                        width: isSelected ? 3 : 1,
-                      ),
+          SafeArea(
+            child: Column(
+              children: [
+                // Header
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 12),
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF04020C),
+                    border: Border(
+                      bottom: BorderSide(color: Color(0xFF00FFFF), width: 2),
                     ),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.person,
-                              size: 40,
-                              color: isLocked
-                                  ? Colors.grey[600]
-                                  : character.accentColor,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              character.name,
-                              style: TextStyle(
-                                color: isLocked
-                                    ? Colors.grey[600]
-                                    : Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                  ),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            border: Border.all(
+                                color: const Color(0xFF00FFFF), width: 2),
+                          ),
+                          child: const Icon(Icons.arrow_back,
+                              color: Color(0xFF00FFFF), size: 18),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'SELECT FIGHTER',
+                            style: GoogleFonts.pressStart2p(
+                              textStyle: const TextStyle(
+                                color: Color(0xFFFFFF00),
+                                fontSize: 13,
+                                letterSpacing: 2,
                               ),
                             ),
-                          ],
-                        ),
-                        if (isLocked)
-                          Positioned(
-                            top: 8,
-                            right: 8,
-                            child: Icon(
-                              Icons.lock,
-                              color: Colors.grey[500],
-                              size: 20,
-                            ),
                           ),
+                        ),
+                      ),
+                      const SizedBox(width: 30),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                // Preview
+                SizedBox(
+                  height: 180,
+                  child: FighterWidget(
+                    character: character,
+                    animState: AnimationState.idle,
+                    facingRight: true,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  character.name.toUpperCase(),
+                  style: GoogleFonts.pressStart2p(
+                    textStyle: TextStyle(
+                      color: character.accentColor,
+                      fontSize: 16,
+                      shadows: [
+                        Shadow(
+                            color: character.accentColor, blurRadius: 12),
                       ],
                     ),
                   ),
-                );
-              },
-            ),
-          ),
-          // Confirm button
-          Padding(
-            padding: const EdgeInsets.all(24),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  widget.onSelect(GameCharacter.roster[_selectedIndex]);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.yellowAccent,
-                  foregroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  character.hairStyle.toUpperCase(),
+                  style: GoogleFonts.pressStart2p(
+                    textStyle: const TextStyle(
+                        color: Colors.white38, fontSize: 7),
                   ),
                 ),
-                child: const Text(
-                  'FIGHT!',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
+                const SizedBox(height: 16),
+                // Character grid
+                Expanded(
+                  child: GridView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                      childAspectRatio: 1.6,
+                    ),
+                    itemCount: GameCharacter.roster.length,
+                    itemBuilder: (context, index) {
+                      final c = GameCharacter.roster[index];
+                      final isLocked = c.isPaid && !isPaid;
+                      final isSelected = _selectedIndex == index;
+
+                      return GestureDetector(
+                        onTap: () {
+                          if (isLocked) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.black,
+                                content: Text(
+                                  'UNLOCK FOR \$2.99!',
+                                  style: GoogleFonts.pressStart2p(
+                                    textStyle: const TextStyle(
+                                        color: Color(0xFFFFFF00), fontSize: 9),
+                                  ),
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+                          setState(() => _selectedIndex = index);
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 150),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? c.accentColor.withValues(alpha: 0.15)
+                                : Colors.black,
+                            border: Border.all(
+                              color: isLocked
+                                  ? Colors.white12
+                                  : isSelected
+                                      ? c.accentColor
+                                      : const Color(0xFF00FFFF)
+                                          .withValues(alpha: 0.3),
+                              width: isSelected ? 3 : 2,
+                            ),
+                            boxShadow: isSelected
+                                ? [
+                                    BoxShadow(
+                                      color: c.accentColor
+                                          .withValues(alpha: 0.4),
+                                      blurRadius: 12,
+                                    )
+                                  ]
+                                : null,
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.person,
+                                    size: 32,
+                                    color: isLocked
+                                        ? Colors.grey[700]
+                                        : c.accentColor,
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    c.name.toUpperCase(),
+                                    style: GoogleFonts.pressStart2p(
+                                      textStyle: TextStyle(
+                                        color: isLocked
+                                            ? Colors.grey[600]
+                                            : Colors.white,
+                                        fontSize: 8,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              if (isLocked)
+                                Positioned(
+                                  top: 6,
+                                  right: 6,
+                                  child: Icon(Icons.lock,
+                                      color: Colors.grey[500], size: 16),
+                                ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
-              ),
+                // Confirm button
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: GestureDetector(
+                    onTap: () {
+                      widget.onSelect(GameCharacter.roster[_selectedIndex]);
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        border: Border.all(
+                            color: const Color(0xFFFFFF00), width: 3),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFFFFF00)
+                                .withValues(alpha: 0.4),
+                            blurRadius: 12,
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          'FIGHT!',
+                          style: GoogleFonts.pressStart2p(
+                            textStyle: const TextStyle(
+                              color: Color(0xFFFFFF00),
+                              fontSize: 16,
+                              letterSpacing: 3,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

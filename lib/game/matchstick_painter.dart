@@ -32,35 +32,49 @@ class MatchstickPainter extends CustomPainter {
     // Apply animation transforms
     switch (animState) {
       case AnimationState.idle:
-        final bounce = sin(animProgress * 2 * pi) * 3;
-        canvas.translate(0, bounce);
+        // Boxing footwork: step toward/away from opponent with weight-shift bounce
+        final t = animProgress;
+        final lateralStep = sin(t * 2 * pi) * 10;
+        // Bounce twice per lateral cycle (once per step)
+        final verticalBounce = -sin(t * 4 * pi).abs() * 6;
+        canvas.translate(lateralStep * dir, verticalBounce);
+        // Slight forward lean on step toward opponent
+        canvas.rotate(sin(t * 2 * pi) * 0.07 * dir);
       case AnimationState.punch:
-        // Lean forward
-        final lean = sin(animProgress * pi) * 0.15 * dir;
-        canvas.rotate(lean);
+        // Dramatic lunge forward with big lean
+        final extend = sin(animProgress * pi);
+        canvas.translate(dir * extend * 18, -extend * 5);
+        canvas.rotate(extend * 0.28 * dir);
       case AnimationState.kick:
-        final lean = sin(animProgress * pi) * 0.1 * dir;
-        canvas.rotate(lean);
+        final extend = sin(animProgress * pi);
+        canvas.translate(dir * extend * 10, -extend * 3);
+        canvas.rotate(extend * 0.22 * dir);
       case AnimationState.jumpKick:
-        final jump = -sin(animProgress * pi) * 40;
-        final lean = sin(animProgress * pi) * 0.2 * dir;
-        canvas.translate(dir * sin(animProgress * pi) * 15, jump);
+        // Big aerial jump
+        final jump = -sin(animProgress * pi) * 65;
+        final lean = sin(animProgress * pi) * 0.35 * dir;
+        canvas.translate(dir * sin(animProgress * pi) * 25, jump);
         canvas.rotate(lean);
       case AnimationState.suplex:
         final grab = sin(animProgress * pi);
-        canvas.translate(dir * grab * 20, -grab * 20);
-        canvas.rotate(grab * 0.3 * dir);
+        canvas.translate(dir * grab * 30, -grab * 30);
+        canvas.rotate(grab * 0.45 * dir);
       case AnimationState.hitReceived:
-        final stagger = sin(animProgress * pi) * 15;
-        canvas.translate(-dir * stagger, 0);
-        canvas.rotate(-sin(animProgress * pi) * 0.15 * dir);
+        // Dramatic stagger with rapid wobble
+        final stagger = sin(animProgress * pi) * 22;
+        final wobble = sin(animProgress * pi * 4) * 5;
+        canvas.translate(-dir * stagger + wobble, -sin(animProgress * pi) * 8);
+        canvas.rotate(-sin(animProgress * pi) * 0.28 * dir);
       case AnimationState.ko:
         final fall = animProgress;
         canvas.rotate(fall * (pi / 2) * dir);
-        canvas.translate(0, fall * 20);
+        canvas.translate(dir * fall * 18, fall * 35);
       case AnimationState.victory:
-        final bounce = sin(animProgress * 4 * pi) * 8;
+        // Fast big bouncy celebration
+        final bounce = sin(animProgress * 6 * pi) * 14;
+        final lean = sin(animProgress * 3 * pi) * 0.10;
         canvas.translate(0, bounce);
+        canvas.rotate(lean);
     }
 
     _drawBody(canvas, size, dir);
@@ -70,7 +84,7 @@ class MatchstickPainter extends CustomPainter {
   void _drawBody(Canvas canvas, Size size, double dir) {
     final bodyPaint = Paint()
       ..color = Colors.black
-      ..strokeWidth = 3.5
+      ..strokeWidth = 4.0
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
@@ -133,14 +147,14 @@ class MatchstickPainter extends CustomPainter {
     // Legs
     _drawLegs(canvas, scale, dir, bodyPaint);
 
-    // Gloves / accent on hands
+    // Gloves / accent on hands — slightly bigger
     final glovePaint = Paint()
       ..color = accentColor
       ..style = PaintingStyle.fill;
 
     final handPositions = _getHandPositions(scale, dir);
     for (final pos in handPositions) {
-      canvas.drawCircle(pos, 4 * scale, glovePaint);
+      canvas.drawCircle(pos, 5 * scale, glovePaint);
     }
   }
 
@@ -167,7 +181,6 @@ class MatchstickPainter extends CustomPainter {
 
       case CharacterId.yuki:
         // Double ponytail
-        // Left ponytail
         final lp = Path();
         lp.moveTo(headCenter.dx - 10 * scale, headCenter.dy - 6 * scale);
         lp.quadraticBezierTo(
@@ -184,7 +197,6 @@ class MatchstickPainter extends CustomPainter {
         );
         canvas.drawPath(lp, hairPaint);
 
-        // Right ponytail
         final rp = Path();
         rp.moveTo(headCenter.dx + 10 * scale, headCenter.dy - 6 * scale);
         rp.quadraticBezierTo(
@@ -204,11 +216,13 @@ class MatchstickPainter extends CustomPainter {
         // Top hair
         final tp = Path();
         tp.addArc(
-          Rect.fromCircle(center: headCenter + Offset(0, -4 * scale), radius: headRadius),
+          Rect.fromCircle(
+              center: headCenter + Offset(0, -4 * scale), radius: headRadius),
           -pi * 0.9,
           pi * 0.8,
         );
-        canvas.drawPath(tp, hairPaint..style = PaintingStyle.stroke..strokeWidth = 5 * scale);
+        canvas.drawPath(
+            tp, hairPaint..style = PaintingStyle.stroke..strokeWidth = 5 * scale);
         hairPaint.style = PaintingStyle.fill;
 
       case CharacterId.tank:
@@ -226,7 +240,7 @@ class MatchstickPainter extends CustomPainter {
         canvas.drawPath(path, hairPaint);
 
       case CharacterId.iris:
-        // Afro puffs - two circles on each side of head
+        // Afro puffs
         canvas.drawCircle(
           headCenter + Offset(-14 * scale, -10 * scale),
           10 * scale,
@@ -242,44 +256,64 @@ class MatchstickPainter extends CustomPainter {
 
   void _drawArms(Canvas canvas, double scale, double dir, Paint paint) {
     switch (animState) {
+      case AnimationState.idle:
+        // Boxing guard: front arm extended, back arm raised near face
+        final t = animProgress;
+        final frontBob = sin(t * 4 * pi) * 8;
+        final backBob = cos(t * 4 * pi) * 6;
+        // Front arm in extended guard (toward opponent)
+        canvas.drawLine(
+          Offset(0, -90 * scale),
+          Offset(dir * 22 * scale, (-72 + frontBob) * scale),
+          paint,
+        );
+        // Back arm raised near face
+        canvas.drawLine(
+          Offset(0, -90 * scale),
+          Offset(-dir * 8 * scale, (-90 + backBob) * scale),
+          paint,
+        );
+
       case AnimationState.punch:
-        // Extended punch arm
+        // Big lunging punch
         final extend = sin(animProgress * pi);
         canvas.drawLine(
           Offset(0, -90 * scale),
-          Offset(dir * (20 + extend * 35) * scale, -80 * scale),
+          Offset(dir * (18 + extend * 42) * scale, (-82 + extend * 5) * scale),
           paint,
         );
-        // Back arm
+        // Guard arm pulled back
         canvas.drawLine(
           Offset(0, -90 * scale),
-          Offset(-dir * 18 * scale, -70 * scale),
+          Offset(-dir * 16 * scale, -72 * scale),
           paint,
         );
 
       case AnimationState.victory:
-        // Both arms raised
+        // Both arms raised high, waving
+        final wave = sin(animProgress * 6 * pi) * 6;
         canvas.drawLine(
           Offset(0, -90 * scale),
-          Offset(-20 * scale, -115 * scale),
+          Offset(-22 * scale, (-118 + wave) * scale),
           paint,
         );
         canvas.drawLine(
           Offset(0, -90 * scale),
-          Offset(20 * scale, -115 * scale),
+          Offset(22 * scale, (-118 - wave) * scale),
           paint,
         );
 
       case AnimationState.hitReceived:
-        // Arms flail back
+        // Arms flung back dramatically
+        final stagger = sin(animProgress * pi);
         canvas.drawLine(
           Offset(0, -90 * scale),
-          Offset(-dir * 25 * scale, -75 * scale),
+          Offset(-dir * 30 * scale, (-68 + stagger * 12) * scale),
           paint,
         );
         canvas.drawLine(
           Offset(0, -90 * scale),
-          Offset(-dir * 15 * scale, -65 * scale),
+          Offset(-dir * 16 * scale, (-60 + stagger * 10) * scale),
           paint,
         );
 
@@ -288,31 +322,31 @@ class MatchstickPainter extends CustomPainter {
         final grab = sin(animProgress * pi);
         canvas.drawLine(
           Offset(0, -90 * scale),
-          Offset(dir * (15 + grab * 25) * scale, -85 * scale),
+          Offset(dir * (15 + grab * 30) * scale, -85 * scale),
           paint,
         );
         canvas.drawLine(
           Offset(0, -90 * scale),
-          Offset(dir * (10 + grab * 20) * scale, -75 * scale),
+          Offset(dir * (10 + grab * 25) * scale, -75 * scale),
           paint,
         );
 
       case AnimationState.kick:
       case AnimationState.jumpKick:
-        // Guard position
+        // Guard position during kicks
         canvas.drawLine(
           Offset(0, -90 * scale),
-          Offset(dir * 15 * scale, -80 * scale),
+          Offset(dir * 14 * scale, -82 * scale),
           paint,
         );
         canvas.drawLine(
           Offset(0, -90 * scale),
-          Offset(-dir * 12 * scale, -78 * scale),
+          Offset(-dir * 14 * scale, -80 * scale),
           paint,
         );
 
       default:
-        // Idle / KO default arms
+        // KO / default — arms limp
         canvas.drawLine(
           Offset(0, -90 * scale),
           Offset(-20 * scale, -65 * scale),
@@ -328,31 +362,59 @@ class MatchstickPainter extends CustomPainter {
 
   void _drawLegs(Canvas canvas, double scale, double dir, Paint paint) {
     switch (animState) {
-      case AnimationState.kick:
-        // One leg extended in kick
-        final extend = sin(animProgress * pi);
+      case AnimationState.idle:
+        // Boxing stance with alternating weight shift
+        final t = animProgress;
+        final weightBob = sin(t * 2 * pi) * 4;
         canvas.drawLine(
           Offset(0, -50 * scale),
-          Offset(dir * (10 + extend * 35) * scale, -30 * scale),
+          Offset(dir * (15 + weightBob) * scale, -8 * scale),
           paint,
         );
         canvas.drawLine(
           Offset(0, -50 * scale),
-          Offset(-dir * 12 * scale, -10 * scale),
+          Offset(-dir * (12 - weightBob) * scale, -5 * scale),
+          paint,
+        );
+
+      case AnimationState.kick:
+        // One leg extended in big kick
+        final extend = sin(animProgress * pi);
+        canvas.drawLine(
+          Offset(0, -50 * scale),
+          Offset(dir * (10 + extend * 45) * scale, (-30 + extend * 10) * scale),
+          paint,
+        );
+        canvas.drawLine(
+          Offset(0, -50 * scale),
+          Offset(-dir * 14 * scale, -10 * scale),
           paint,
         );
 
       case AnimationState.jumpKick:
-        // Both legs extended, one forward
+        // Both legs extended in aerial kick
         final extend = sin(animProgress * pi);
         canvas.drawLine(
           Offset(0, -50 * scale),
-          Offset(dir * (15 + extend * 35) * scale, -40 * scale),
+          Offset(dir * (15 + extend * 45) * scale, -38 * scale),
           paint,
         );
         canvas.drawLine(
           Offset(0, -50 * scale),
-          Offset(-dir * (10 + extend * 10) * scale, -35 * scale),
+          Offset(-dir * (12 + extend * 15) * scale, -35 * scale),
+          paint,
+        );
+
+      case AnimationState.ko:
+        // Collapsed legs
+        canvas.drawLine(
+          Offset(0, -50 * scale),
+          Offset(-20 * scale, 0),
+          paint,
+        );
+        canvas.drawLine(
+          Offset(0, -50 * scale),
+          Offset(18 * scale, -8 * scale),
           paint,
         );
 
@@ -373,16 +435,31 @@ class MatchstickPainter extends CustomPainter {
 
   List<Offset> _getHandPositions(double scale, double dir) {
     switch (animState) {
+      case AnimationState.idle:
+        final t = animProgress;
+        final frontBob = sin(t * 4 * pi) * 8;
+        final backBob = cos(t * 4 * pi) * 6;
+        return [
+          Offset(dir * 22 * scale, (-72 + frontBob) * scale),
+          Offset(-dir * 8 * scale, (-90 + backBob) * scale),
+        ];
       case AnimationState.punch:
         final extend = sin(animProgress * pi);
         return [
-          Offset(dir * (20 + extend * 35) * scale, -80 * scale),
-          Offset(-dir * 18 * scale, -70 * scale),
+          Offset(dir * (18 + extend * 42) * scale, (-82 + extend * 5) * scale),
+          Offset(-dir * 16 * scale, -72 * scale),
         ];
       case AnimationState.victory:
+        final wave = sin(animProgress * 6 * pi) * 6;
         return [
-          Offset(-20 * scale, -115 * scale),
-          Offset(20 * scale, -115 * scale),
+          Offset(-22 * scale, (-118 + wave) * scale),
+          Offset(22 * scale, (-118 - wave) * scale),
+        ];
+      case AnimationState.hitReceived:
+        final stagger = sin(animProgress * pi);
+        return [
+          Offset(-dir * 30 * scale, (-68 + stagger * 12) * scale),
+          Offset(-dir * 16 * scale, (-60 + stagger * 10) * scale),
         ];
       default:
         return [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/character.dart';
 import '../services/audio_service.dart';
 import '../widgets/confetti_widget.dart';
@@ -36,16 +37,22 @@ class ResultScreen extends StatefulWidget {
 }
 
 class _ResultScreenState extends State<ResultScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _shakeController;
+  late AnimationController _flashController;
 
   @override
   void initState() {
     super.initState();
     _shakeController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 600),
     );
+    _flashController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    )..repeat(reverse: true);
+
     if (!widget.playerWon) {
       _shakeController.forward();
     }
@@ -54,6 +61,7 @@ class _ResultScreenState extends State<ResultScreen>
   @override
   void dispose() {
     _shakeController.dispose();
+    _flashController.dispose();
     super.dispose();
   }
 
@@ -63,21 +71,43 @@ class _ResultScreenState extends State<ResultScreen>
 
   @override
   Widget build(BuildContext context) {
+    final winColor = const Color(0xFFFFFF00);
+    final loseColor = Colors.red;
+    final accentColor = widget.playerWon ? winColor : loseColor;
+
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1A2E),
+      backgroundColor: const Color(0xFF04020C),
       body: Stack(
         children: [
-          // Background
+          // Background gradient
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: widget.playerWon
-                    ? [const Color(0xFF1B4332), const Color(0xFF081C15)]
-                    : [const Color(0xFF641220), const Color(0xFF370617)],
+                    ? [
+                        const Color(0xFF0D1A00),
+                        const Color(0xFF04020C),
+                      ]
+                    : [
+                        const Color(0xFF1A0000),
+                        const Color(0xFF04020C),
+                      ],
               ),
             ),
+          ),
+          // Scanlines
+          Positioned.fill(
+            child: CustomPaint(painter: _ResultScanlinesPainter()),
+          ),
+          // Neon top border
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 3,
+            child: Container(color: accentColor),
           ),
           // Confetti for victory
           if (widget.playerWon)
@@ -93,7 +123,7 @@ class _ResultScreenState extends State<ResultScreen>
                     ? ((_shakeController.value < 0.5)
                             ? _shakeController.value
                             : 1.0 - _shakeController.value) *
-                        10
+                        14
                     : 0.0;
                 return Transform.translate(
                   offset: Offset(shake, 0),
@@ -107,114 +137,147 @@ class _ResultScreenState extends State<ResultScreen>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Title
-                      Text(
-                        widget.playerWon ? 'WINNER!' : 'K.O.',
-                        style: TextStyle(
-                          fontSize: 52,
-                          fontWeight: FontWeight.w900,
-                          color: widget.playerWon
-                              ? Colors.yellowAccent
-                              : Colors.redAccent,
-                          letterSpacing: 6,
-                          shadows: [
-                            Shadow(
-                              color: (widget.playerWon
-                                      ? Colors.yellow
-                                      : Colors.red)
-                                  .withValues(alpha: 0.5),
-                              blurRadius: 20,
+                      AnimatedBuilder(
+                        animation: _flashController,
+                        builder: (context, child) {
+                          final glow = _flashController.value;
+                          return Text(
+                            widget.playerWon ? 'WINNER!' : 'K.O.!!',
+                            style: GoogleFonts.pressStart2p(
+                              textStyle: TextStyle(
+                                fontSize: widget.playerWon ? 36 : 48,
+                                color: accentColor,
+                                shadows: [
+                                  Shadow(
+                                    color: accentColor
+                                        .withValues(alpha: 0.4 + glow * 0.6),
+                                    blurRadius: 20 + glow * 30,
+                                  ),
+                                  Shadow(
+                                    color: accentColor
+                                        .withValues(alpha: 0.3 + glow * 0.4),
+                                    blurRadius: 50 + glow * 50,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
                       if (widget.isPerfect && widget.playerWon) ...[
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 10),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 6),
+                              horizontal: 20, vertical: 8),
                           decoration: BoxDecoration(
-                            color: Colors.amber.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.amber, width: 2),
+                            color: Colors.black,
+                            border: Border.all(
+                                color: const Color(0xFFFF8000), width: 3),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFFFF8000)
+                                    .withValues(alpha: 0.5),
+                                blurRadius: 16,
+                              ),
+                            ],
                           ),
-                          child: const Text(
-                            'FLAWLESS',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.amber,
-                              letterSpacing: 4,
+                          child: Text(
+                            'FLAWLESS VICTORY!',
+                            style: GoogleFonts.pressStart2p(
+                              textStyle: const TextStyle(
+                                fontSize: 11,
+                                color: Color(0xFFFF8000),
+                                letterSpacing: 2,
+                              ),
                             ),
                           ),
                         ),
                       ],
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 28),
                       // Character
                       SizedBox(
                         height: 180,
                         child: FighterWidget(
-                          character:
-                              widget.playerWon ? widget.player : widget.opponent,
+                          character: widget.playerWon
+                              ? widget.player
+                              : widget.opponent,
                           animState: AnimationState.victory,
                           facingRight: true,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        widget.playerWon
-                            ? widget.player.name
-                            : widget.opponent.name,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+                        (widget.playerWon
+                                ? widget.player.name
+                                : widget.opponent.name)
+                            .toUpperCase(),
+                        style: GoogleFonts.pressStart2p(
+                          textStyle:
+                              TextStyle(color: accentColor, fontSize: 14),
                         ),
                       ),
-                      const SizedBox(height: 24),
-                      // Score
-                      Text(
-                        'Rounds: ${widget.playerRoundWins} - ${widget.opponentRoundWins}',
-                        style: const TextStyle(
-                          color: Colors.white70,
-                          fontSize: 18,
+                      const SizedBox(height: 20),
+                      // Rounds
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          border: Border.all(
+                              color: Colors.white24, width: 2),
+                        ),
+                        child: Text(
+                          'ROUNDS  ${widget.playerRoundWins} - ${widget.opponentRoundWins}',
+                          style: GoogleFonts.pressStart2p(
+                            textStyle: const TextStyle(
+                                color: Colors.white70, fontSize: 11),
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
                       // Stats card
                       Container(
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Colors.black26,
-                          borderRadius: BorderRadius.circular(16),
-                          border:
-                              Border.all(color: Colors.white12, width: 1),
+                          color: Colors.black,
+                          border: Border.all(
+                            color: accentColor.withValues(alpha: 0.4),
+                            width: 2,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: accentColor.withValues(alpha: 0.1),
+                              blurRadius: 16,
+                            ),
+                          ],
                         ),
                         child: Column(
                           children: [
-                            _statRow('Questions Answered',
-                                '${widget.questionsAnswered}'),
-                            _statRow('Correct Answers',
-                                '${widget.correctAnswers}'),
-                            _statRow(
-                                'Accuracy', '${(_accuracy * 100).toInt()}%'),
-                            _statRow('Best Streak', '${widget.bestStreak}x'),
+                            _statRow('QUESTIONS',
+                                '${widget.questionsAnswered}', accentColor),
+                            _statRow('CORRECT',
+                                '${widget.correctAnswers}', accentColor),
+                            _statRow('ACCURACY',
+                                '${(_accuracy * 100).toInt()}%', accentColor),
+                            _statRow('BEST STREAK',
+                                '${widget.bestStreak}X', accentColor),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 28),
                       // Buttons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           _buildButton(
                             'REMATCH',
-                            Colors.blueAccent,
+                            const Color(0xFF00FFFF),
                             () => Navigator.of(context).pop('rematch'),
                           ),
                           const SizedBox(width: 16),
                           _buildButton(
                             'MENU',
-                            Colors.grey[700]!,
+                            const Color(0xFFFF00FF),
                             () => Navigator.of(context)
                                 .popUntil((route) => route.isFirst),
                           ),
@@ -231,22 +294,23 @@ class _ResultScreenState extends State<ResultScreen>
     );
   }
 
-  Widget _statRow(String label, String value) {
+  Widget _statRow(String label, String value, Color accentColor) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             label,
-            style: const TextStyle(color: Colors.white60, fontSize: 14),
+            style: GoogleFonts.pressStart2p(
+              textStyle:
+                  const TextStyle(color: Colors.white54, fontSize: 8),
+            ),
           ),
           Text(
             value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+            style: GoogleFonts.pressStart2p(
+              textStyle: TextStyle(color: accentColor, fontSize: 10),
             ),
           ),
         ],
@@ -258,28 +322,39 @@ class _ResultScreenState extends State<ResultScreen>
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
         decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(12),
+          color: Colors.black,
+          border: Border.all(color: color, width: 3),
           boxShadow: [
             BoxShadow(
               color: color.withValues(alpha: 0.4),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
+              blurRadius: 12,
             ),
           ],
         ),
         child: Text(
           text,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1,
+          style: GoogleFonts.pressStart2p(
+            textStyle: TextStyle(color: color, fontSize: 10, letterSpacing: 1),
           ),
         ),
       ),
     );
   }
+}
+
+class _ResultScanlinesPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.black.withValues(alpha: 0.10)
+      ..strokeWidth = 1;
+    for (double y = 0; y < size.height; y += 3) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_ResultScanlinesPainter old) => false;
 }
