@@ -43,8 +43,24 @@ class _FightScreenState extends State<FightScreen> {
 
   bool _isAnimating = false;
   bool _showRoundBanner = true;
+  bool _isPaused = false;
   String? _attackLabel;
   String? _damageLabel;
+
+  // Grawlix state
+  String? _playerGrawlix;
+  String? _opponentGrawlix;
+
+  static const _grawlixOptions = [
+    '#\$@!',
+    '@&#\$?!',
+    '%#@\$!',
+    '\$#@&!',
+    '!@#\$%',
+    '#\$%&!',
+    '@#!\$?',
+    '&%#@!',
+  ];
 
   @override
   void initState() {
@@ -86,7 +102,7 @@ class _FightScreenState extends State<FightScreen> {
   }
 
   void _onAnswer(int selectedIndex) {
-    if (_isAnimating || _questionIndex >= _questions.length) return;
+    if (_isPaused || _isAnimating || _questionIndex >= _questions.length) return;
 
     final question = _questions[_questionIndex];
     final isCorrect =
@@ -96,6 +112,8 @@ class _FightScreenState extends State<FightScreen> {
 
     setState(() {
       _isAnimating = true;
+      _playerGrawlix = null;
+      _opponentGrawlix = null;
     });
 
     if (isCorrect) {
@@ -128,6 +146,8 @@ class _FightScreenState extends State<FightScreen> {
           _opponentAnim = AnimationState.hitReceived;
           _combat.opponentHp =
               (_combat.opponentHp - attack.damage).clamp(0, 500);
+          _opponentGrawlix = _maybeGrawlix();
+          _playerGrawlix = null;
         });
       });
 
@@ -153,6 +173,8 @@ class _FightScreenState extends State<FightScreen> {
           _playerAnim = AnimationState.hitReceived;
           _combat.playerHp =
               (_combat.playerHp - attack.damage).clamp(0, 500);
+          _playerGrawlix = _maybeGrawlix();
+          _opponentGrawlix = null;
         });
       });
 
@@ -161,6 +183,24 @@ class _FightScreenState extends State<FightScreen> {
         _afterTurn();
       });
     }
+  }
+
+  /// 50% chance to return a random grawlix string, or null.
+  String? _maybeGrawlix() {
+    if (_random.nextBool()) {
+      return _grawlixOptions[_random.nextInt(_grawlixOptions.length)];
+    }
+    return null;
+  }
+
+  void _togglePause() {
+    setState(() {
+      _isPaused = !_isPaused;
+    });
+  }
+
+  void _quitToMenu() {
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   void _playAttackSound(AttackType attack) {
@@ -190,6 +230,7 @@ class _FightScreenState extends State<FightScreen> {
       _isAnimating = false;
       _attackLabel = null;
       _damageLabel = null;
+      // Keep grawlix visible while answering next question
       _questionIndex++;
     });
 
@@ -230,6 +271,8 @@ class _FightScreenState extends State<FightScreen> {
           _isAnimating = false;
           _attackLabel = null;
           _damageLabel = null;
+          _playerGrawlix = null;
+          _opponentGrawlix = null;
         });
         _showRoundStart();
       }
@@ -260,28 +303,149 @@ class _FightScreenState extends State<FightScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF1A1A2E),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            // Top info bar
-            _buildTopBar(),
-            // Fight arena
-            Expanded(
-              flex: 55,
-              child: _buildArena(),
-            ),
-            // Question panel
-            if (!_showRoundBanner &&
-                !_combat.isRoundOver &&
-                _questionIndex < _questions.length)
-              Expanded(
-                flex: 45,
-                child: QuestionPanel(
-                  question: _questions[_questionIndex],
-                  onAnswer: _onAnswer,
-                  difficulty: widget.difficulty,
+            Column(
+              children: [
+                // Top info bar
+                _buildTopBar(),
+                // Fight arena
+                Expanded(
+                  flex: 55,
+                  child: _buildArena(),
                 ),
-              ),
+                // Question panel
+                if (!_showRoundBanner &&
+                    !_combat.isRoundOver &&
+                    _questionIndex < _questions.length)
+                  Expanded(
+                    flex: 45,
+                    child: QuestionPanel(
+                      question: _questions[_questionIndex],
+                      onAnswer: _onAnswer,
+                      difficulty: widget.difficulty,
+                      paused: _isPaused,
+                    ),
+                  ),
+              ],
+            ),
+            // Pause overlay
+            if (_isPaused) _buildPauseOverlay(),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPauseOverlay() {
+    return Container(
+      color: Colors.black.withValues(alpha: 0.85),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'PAUSED',
+              style: TextStyle(
+                color: Colors.yellowAccent,
+                fontSize: 40,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 6,
+              ),
+            ),
+            const SizedBox(height: 40),
+            _pauseMenuButton('RESUME', Colors.yellowAccent, Colors.black, () {
+              _togglePause();
+            }),
+            const SizedBox(height: 16),
+            // Settings section
+            Container(
+              width: 280,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  const Text(
+                    'SETTINGS',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  StatefulBuilder(
+                    builder: (context, setInnerState) {
+                      return Column(
+                        children: [
+                          SwitchListTile(
+                            dense: true,
+                            title: const Text('Music',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 14)),
+                            value: widget.audioService.musicEnabled,
+                            onChanged: (v) {
+                              setInnerState(() {
+                                widget.audioService.toggleMusic();
+                              });
+                            },
+                            activeTrackColor: Colors.yellowAccent,
+                          ),
+                          SwitchListTile(
+                            dense: true,
+                            title: const Text('SFX',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 14)),
+                            value: widget.audioService.sfxEnabled,
+                            onChanged: (v) {
+                              setInnerState(() {
+                                widget.audioService.toggleSfx();
+                              });
+                            },
+                            activeTrackColor: Colors.yellowAccent,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            _pauseMenuButton(
+                'QUIT TO MENU', Colors.redAccent, Colors.white, _quitToMenu),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _pauseMenuButton(
+      String text, Color bg, Color textColor, VoidCallback onTap) {
+    return SizedBox(
+      width: 280,
+      child: ElevatedButton(
+        onPressed: onTap,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: bg,
+          foregroundColor: textColor,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2,
+            color: textColor,
+          ),
         ),
       ),
     );
@@ -289,10 +453,23 @@ class _FightScreenState extends State<FightScreen> {
 
   Widget _buildTopBar() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       color: Colors.black54,
       child: Row(
         children: [
+          // Pause / menu button
+          GestureDetector(
+            onTap: _togglePause,
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Colors.white12,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(Icons.menu, color: Colors.white70, size: 20),
+            ),
+          ),
+          const SizedBox(width: 6),
           HpBar(
             percent: _combat.playerHpPercent,
             color: widget.player.accentColor,
@@ -336,6 +513,34 @@ class _FightScreenState extends State<FightScreen> {
             alignRight: true,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildGrawlixBubble(String text, bool pointsRight) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0.0, end: 1.0),
+      duration: const Duration(milliseconds: 300),
+      builder: (context, value, child) {
+        return Transform.scale(
+          scale: 0.5 + value * 0.5,
+          child: Opacity(opacity: value, child: child),
+        );
+      },
+      child: CustomPaint(
+        painter: _SpeechBubblePainter(pointsRight: pointsRight),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -384,6 +589,20 @@ class _FightScreenState extends State<FightScreen> {
             onAnimationComplete: null,
           ),
         ),
+        // Grawlix bubble — player (left side)
+        if (_playerGrawlix != null)
+          Positioned(
+            bottom: 140,
+            left: 10,
+            child: _buildGrawlixBubble(_playerGrawlix!, true),
+          ),
+        // Grawlix bubble — opponent (right side)
+        if (_opponentGrawlix != null)
+          Positioned(
+            bottom: 140,
+            right: 10,
+            child: _buildGrawlixBubble(_opponentGrawlix!, false),
+          ),
         // Attack label
         if (_attackLabel != null)
           Positioned(
@@ -489,4 +708,83 @@ class _FightScreenState extends State<FightScreen> {
       ],
     );
   }
+}
+
+/// Comic-book style jagged speech bubble painter.
+class _SpeechBubblePainter extends CustomPainter {
+  final bool pointsRight;
+
+  _SpeechBubblePainter({required this.pointsRight});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+    final borderPaint = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0;
+
+    final w = size.width;
+    final h = size.height;
+    const jaggedness = 3.0;
+
+    // Main bubble with jagged edges
+    final path = Path();
+    // Top edge — jagged
+    path.moveTo(0, 0);
+    for (double x = 0; x < w; x += 8) {
+      path.lineTo(x + 4, -jaggedness);
+      path.lineTo(x + 8, 0);
+    }
+    // Right edge
+    for (double y = 0; y < h; y += 8) {
+      path.lineTo(w + jaggedness, y + 4);
+      path.lineTo(w, y + 8);
+    }
+    // Bottom edge
+    for (double x = w; x > 0; x -= 8) {
+      path.lineTo(x - 4, h + jaggedness);
+      path.lineTo(x - 8, h);
+    }
+    // Left edge
+    for (double y = h; y > 0; y -= 8) {
+      path.lineTo(-jaggedness, y - 4);
+      path.lineTo(0, y - 8);
+    }
+    path.close();
+
+    canvas.drawPath(path, paint);
+    canvas.drawPath(path, borderPaint);
+
+    // Tail pointer (pointing down toward the character)
+    final tailPath = Path();
+    if (pointsRight) {
+      tailPath.moveTo(w * 0.6, h);
+      tailPath.lineTo(w * 0.7, h + 12);
+      tailPath.lineTo(w * 0.8, h);
+    } else {
+      tailPath.moveTo(w * 0.2, h);
+      tailPath.lineTo(w * 0.3, h + 12);
+      tailPath.lineTo(w * 0.4, h);
+    }
+    tailPath.close();
+    canvas.drawPath(tailPath, paint);
+    canvas.drawPath(tailPath, borderPaint);
+    // Hide the border between bubble body and tail
+    final coverPaint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.0;
+    if (pointsRight) {
+      canvas.drawLine(Offset(w * 0.6 + 1, h), Offset(w * 0.8 - 1, h), coverPaint);
+    } else {
+      canvas.drawLine(Offset(w * 0.2 + 1, h), Offset(w * 0.4 - 1, h), coverPaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_SpeechBubblePainter oldDelegate) =>
+      oldDelegate.pointsRight != pointsRight;
 }

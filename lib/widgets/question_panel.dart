@@ -8,6 +8,7 @@ class QuestionPanel extends StatefulWidget {
   final ValueChanged<int> onAnswer;
   final Difficulty difficulty;
   final int timeLimit;
+  final bool paused;
 
   const QuestionPanel({
     super.key,
@@ -15,6 +16,7 @@ class QuestionPanel extends StatefulWidget {
     required this.onAnswer,
     required this.difficulty,
     this.timeLimit = 15,
+    this.paused = false,
   });
 
   @override
@@ -51,6 +53,12 @@ class _QuestionPanelState extends State<QuestionPanel> {
       _answered = false;
       _timeRemaining = widget.timeLimit;
       _buildVisibleIndices();
+      _startTimer();
+    }
+    // Pause / resume timer
+    if (widget.paused && !oldWidget.paused) {
+      _timer?.cancel();
+    } else if (!widget.paused && oldWidget.paused && !_answered) {
       _startTimer();
     }
   }
