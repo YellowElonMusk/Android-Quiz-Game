@@ -6,6 +6,11 @@ import '../widgets/confetti_widget.dart';
 import '../widgets/fighter_widget.dart';
 import '../models/combat.dart';
 
+const _amber = Color(0xFFFFB800);
+const _orange = Color(0xFFFF4500);
+const _screenGreen = Color(0xFF39FF14);
+const _arcadeBg = Color(0xFF0A0500);
+
 class ResultScreen extends StatefulWidget {
   final bool playerWon;
   final GameCharacter player;
@@ -38,30 +43,28 @@ class ResultScreen extends StatefulWidget {
 
 class _ResultScreenState extends State<ResultScreen>
     with TickerProviderStateMixin {
-  late AnimationController _shakeController;
-  late AnimationController _flashController;
+  late AnimationController _shakeCtrl;
+  late AnimationController _pulseCtrl;
 
   @override
   void initState() {
     super.initState();
-    _shakeController = AnimationController(
+    _shakeCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
-    _flashController = AnimationController(
+    _pulseCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 1100),
     )..repeat(reverse: true);
 
-    if (!widget.playerWon) {
-      _shakeController.forward();
-    }
+    if (!widget.playerWon) _shakeCtrl.forward();
   }
 
   @override
   void dispose() {
-    _shakeController.dispose();
-    _flashController.dispose();
+    _shakeCtrl.dispose();
+    _pulseCtrl.dispose();
     super.dispose();
   }
 
@@ -71,64 +74,46 @@ class _ResultScreenState extends State<ResultScreen>
 
   @override
   Widget build(BuildContext context) {
-    final winColor = const Color(0xFFFFFF00);
-    final loseColor = Colors.red;
-    final accentColor = widget.playerWon ? winColor : loseColor;
+    final accent = widget.playerWon ? _amber : _orange;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF04020C),
+      backgroundColor: _arcadeBg,
       body: Stack(
         children: [
-          // Background gradient
+          // Background gradient — warm win / warm-red loss
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: widget.playerWon
-                    ? [
-                        const Color(0xFF0D1A00),
-                        const Color(0xFF04020C),
-                      ]
-                    : [
-                        const Color(0xFF1A0000),
-                        const Color(0xFF04020C),
-                      ],
+                    ? const [Color(0xFF1A0E00), _arcadeBg]
+                    : const [Color(0xFF1A0200), _arcadeBg],
               ),
             ),
           ),
           // Scanlines
-          Positioned.fill(
-            child: CustomPaint(painter: _ResultScanlinesPainter()),
-          ),
-          // Neon top border
+          Positioned.fill(child: CustomPaint(painter: _ScanlinesPainter())),
+          // Top accent strip
           Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 3,
-            child: Container(color: accentColor),
-          ),
-          // Confetti for victory
+              top: 0, left: 0, right: 0, height: 3,
+              child: Container(color: accent)),
+          // Confetti
           if (widget.playerWon)
-            const Positioned.fill(
-              child: ConfettiWidget(isPlaying: true),
-            ),
+            const Positioned.fill(child: ConfettiWidget(isPlaying: true)),
           // Content
           SafeArea(
             child: AnimatedBuilder(
-              animation: _shakeController,
+              animation: _shakeCtrl,
               builder: (context, child) {
                 final shake = !widget.playerWon
-                    ? ((_shakeController.value < 0.5)
-                            ? _shakeController.value
-                            : 1.0 - _shakeController.value) *
-                        14
+                    ? ((_shakeCtrl.value < 0.5
+                                ? _shakeCtrl.value
+                                : 1.0 - _shakeCtrl.value) *
+                            16)
                     : 0.0;
                 return Transform.translate(
-                  offset: Offset(shake, 0),
-                  child: child,
-                );
+                    offset: Offset(shake, 0), child: child);
               },
               child: Center(
                 child: SingleChildScrollView(
@@ -136,27 +121,34 @@ class _ResultScreenState extends State<ResultScreen>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Title
+                      // Title — pulsing drop-shadow
                       AnimatedBuilder(
-                        animation: _flashController,
-                        builder: (context, child) {
-                          final glow = _flashController.value;
+                        animation: _pulseCtrl,
+                        builder: (context, _) {
+                          final g = _pulseCtrl.value;
                           return Text(
                             widget.playerWon ? 'WINNER!' : 'K.O.!!',
-                            style: GoogleFonts.pressStart2p(
+                            style: GoogleFonts.blackOpsOne(
                               textStyle: TextStyle(
-                                fontSize: widget.playerWon ? 36 : 48,
-                                color: accentColor,
+                                fontSize: widget.playerWon ? 44 : 56,
+                                color: accent,
                                 shadows: [
                                   Shadow(
-                                    color: accentColor
-                                        .withValues(alpha: 0.4 + glow * 0.6),
-                                    blurRadius: 20 + glow * 30,
+                                    color: (widget.playerWon
+                                            ? _orange
+                                            : const Color(0xFF8B0000)),
+                                    blurRadius: 0,
+                                    offset: const Offset(4, 4),
                                   ),
                                   Shadow(
-                                    color: accentColor
-                                        .withValues(alpha: 0.3 + glow * 0.4),
-                                    blurRadius: 50 + glow * 50,
+                                    color: Colors.black,
+                                    blurRadius: 0,
+                                    offset: const Offset(7, 7),
+                                  ),
+                                  Shadow(
+                                    color: accent.withValues(
+                                        alpha: 0.3 + g * 0.5),
+                                    blurRadius: 24 + g * 24,
                                   ),
                                 ],
                               ),
@@ -171,30 +163,26 @@ class _ResultScreenState extends State<ResultScreen>
                               horizontal: 20, vertical: 8),
                           decoration: BoxDecoration(
                             color: Colors.black,
-                            border: Border.all(
-                                color: const Color(0xFFFF8000), width: 3),
+                            border: Border.all(color: _orange, width: 3),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFFFF8000)
-                                    .withValues(alpha: 0.5),
-                                blurRadius: 16,
-                              ),
+                                  color: _orange.withValues(alpha: 0.4),
+                                  blurRadius: 14)
                             ],
                           ),
                           child: Text(
                             'FLAWLESS VICTORY!',
-                            style: GoogleFonts.pressStart2p(
+                            style: GoogleFonts.blackOpsOne(
                               textStyle: const TextStyle(
-                                fontSize: 11,
-                                color: Color(0xFFFF8000),
+                                fontSize: 13,
+                                color: _orange,
                                 letterSpacing: 2,
                               ),
                             ),
                           ),
                         ),
                       ],
-                      const SizedBox(height: 28),
-                      // Character
+                      const SizedBox(height: 24),
                       SizedBox(
                         height: 180,
                         child: FighterWidget(
@@ -205,82 +193,77 @@ class _ResultScreenState extends State<ResultScreen>
                           facingRight: true,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Text(
                         (widget.playerWon
                                 ? widget.player.name
                                 : widget.opponent.name)
                             .toUpperCase(),
-                        style: GoogleFonts.pressStart2p(
-                          textStyle:
-                              TextStyle(color: accentColor, fontSize: 14),
+                        style: GoogleFonts.blackOpsOne(
+                          textStyle: TextStyle(
+                            color: accent,
+                            fontSize: 16,
+                            letterSpacing: 2,
+                            shadows: [
+                              Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 0,
+                                  offset: const Offset(2, 2)),
+                            ],
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      // Rounds
+                      const SizedBox(height: 16),
+                      // Round score
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 8),
                         decoration: BoxDecoration(
                           color: Colors.black,
-                          border: Border.all(
-                              color: Colors.white24, width: 2),
+                          border:
+                              Border.all(color: Colors.white24, width: 2),
                         ),
                         child: Text(
                           'ROUNDS  ${widget.playerRoundWins} - ${widget.opponentRoundWins}',
-                          style: GoogleFonts.pressStart2p(
+                          style: GoogleFonts.vt323(
                             textStyle: const TextStyle(
-                                color: Colors.white70, fontSize: 11),
+                                color: Colors.white70, fontSize: 24),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      // Stats card
+                      const SizedBox(height: 16),
+                      // Stats
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: Colors.black,
                           border: Border.all(
-                            color: accentColor.withValues(alpha: 0.4),
-                            width: 2,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: accentColor.withValues(alpha: 0.1),
-                              blurRadius: 16,
-                            ),
-                          ],
+                              color: accent.withValues(alpha: 0.35),
+                              width: 2),
                         ),
                         child: Column(
                           children: [
                             _statRow('QUESTIONS',
-                                '${widget.questionsAnswered}', accentColor),
+                                '${widget.questionsAnswered}', accent),
                             _statRow('CORRECT',
-                                '${widget.correctAnswers}', accentColor),
+                                '${widget.correctAnswers}', accent),
                             _statRow('ACCURACY',
-                                '${(_accuracy * 100).toInt()}%', accentColor),
+                                '${(_accuracy * 100).toInt()}%', accent),
                             _statRow('BEST STREAK',
-                                '${widget.bestStreak}X', accentColor),
+                                '${widget.bestStreak}X', accent),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 28),
-                      // Buttons
+                      const SizedBox(height: 24),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildButton(
-                            'REMATCH',
-                            const Color(0xFF00FFFF),
-                            () => Navigator.of(context).pop('rematch'),
-                          ),
-                          const SizedBox(width: 16),
-                          _buildButton(
-                            'MENU',
-                            const Color(0xFFFF00FF),
-                            () => Navigator.of(context)
-                                .popUntil((route) => route.isFirst),
-                          ),
+                          _btn('REMATCH', _screenGreen,
+                              () => Navigator.of(context).pop('rematch')),
+                          const SizedBox(width: 14),
+                          _btn('MENU', _orange,
+                              () => Navigator.of(context)
+                                  .popUntil((r) => r.isFirst)),
                         ],
                       ),
                     ],
@@ -294,57 +277,49 @@ class _ResultScreenState extends State<ResultScreen>
     );
   }
 
-  Widget _statRow(String label, String value, Color accentColor) {
+  Widget _statRow(String label, String value, Color accent) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: GoogleFonts.pressStart2p(
-              textStyle:
-                  const TextStyle(color: Colors.white54, fontSize: 8),
-            ),
-          ),
-          Text(
-            value,
-            style: GoogleFonts.pressStart2p(
-              textStyle: TextStyle(color: accentColor, fontSize: 10),
-            ),
-          ),
+          Text(label,
+              style: GoogleFonts.vt323(
+                  textStyle:
+                      const TextStyle(color: Colors.white54, fontSize: 20))),
+          Text(value,
+              style: GoogleFonts.vt323(
+                  textStyle: TextStyle(color: accent, fontSize: 24))),
         ],
       ),
     );
   }
 
-  Widget _buildButton(String text, Color color, VoidCallback onTap) {
+  Widget _btn(String text, Color accent, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+        padding:
+            const EdgeInsets.symmetric(horizontal: 22, vertical: 13),
         decoration: BoxDecoration(
           color: Colors.black,
-          border: Border.all(color: color, width: 3),
+          border: Border.all(color: accent, width: 3),
           boxShadow: [
             BoxShadow(
-              color: color.withValues(alpha: 0.4),
-              blurRadius: 12,
-            ),
+                color: accent.withValues(alpha: 0.35), blurRadius: 12)
           ],
         ),
-        child: Text(
-          text,
-          style: GoogleFonts.pressStart2p(
-            textStyle: TextStyle(color: color, fontSize: 10, letterSpacing: 1),
-          ),
-        ),
+        child: Text(text,
+            style: GoogleFonts.blackOpsOne(
+              textStyle: TextStyle(
+                  color: accent, fontSize: 12, letterSpacing: 1),
+            )),
       ),
     );
   }
 }
 
-class _ResultScanlinesPainter extends CustomPainter {
+class _ScanlinesPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
@@ -356,5 +331,5 @@ class _ResultScanlinesPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_ResultScanlinesPainter old) => false;
+  bool shouldRepaint(_ScanlinesPainter old) => false;
 }

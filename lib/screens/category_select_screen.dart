@@ -3,6 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/question.dart';
 import '../services/storage_service.dart';
 
+const _amber = Color(0xFFFFB800);
+const _orange = Color(0xFFFF4500);
+const _screenGreen = Color(0xFF39FF14);
+const _arcadeBg = Color(0xFF0A0500);
+
 class CategorySelectScreen extends StatefulWidget {
   final StorageService storageService;
   final void Function(QuizCategory category, Difficulty difficulty) onSelect;
@@ -31,15 +36,16 @@ class _CategorySelectScreenState extends State<CategorySelectScreen> {
     QuizCategory.sports: Icons.sports_soccer,
   };
 
+  // Warm arcade cabinet color palette — each stage has its own marquee tint
   static const _categoryColors = [
-    Color(0xFFFF00FF),
-    Color(0xFF00FFFF),
-    Color(0xFF00AAFF),
-    Color(0xFFFF8000),
-    Color(0xFF00FF00),
-    Color(0xFF8800FF),
-    Color(0xFFFF0066),
-    Color(0xFFFFFF00),
+    Color(0xFFFFB800), // amber
+    Color(0xFFFF4500), // blood orange
+    Color(0xFF39FF14), // phosphor green
+    Color(0xFFFFD700), // gold
+    Color(0xFFFF8C00), // dark orange
+    Color(0xFFFFA500), // orange
+    Color(0xFFFFB800), // amber
+    Color(0xFF39FF14), // phosphor green
   ];
 
   @override
@@ -47,12 +53,12 @@ class _CategorySelectScreenState extends State<CategorySelectScreen> {
     final isPaid = widget.storageService.isPaid;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF04020C),
+      backgroundColor: _arcadeBg,
       body: Stack(
         children: [
           Positioned(
             top: 0, left: 0, right: 0, height: 3,
-            child: Container(color: const Color(0xFFFF00FF)),
+            child: Container(color: _amber),
           ),
           SafeArea(
             child: Column(
@@ -62,9 +68,9 @@ class _CategorySelectScreenState extends State<CategorySelectScreen> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16, vertical: 12),
                   decoration: const BoxDecoration(
-                    color: Color(0xFF04020C),
+                    color: _arcadeBg,
                     border: Border(
-                      bottom: BorderSide(color: Color(0xFFFF00FF), width: 2),
+                      bottom: BorderSide(color: _amber, width: 2),
                     ),
                   ),
                   child: Row(
@@ -75,21 +81,20 @@ class _CategorySelectScreenState extends State<CategorySelectScreen> {
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
                             color: Colors.black,
-                            border: Border.all(
-                                color: const Color(0xFFFF00FF), width: 2),
+                            border: Border.all(color: _amber, width: 2),
                           ),
                           child: const Icon(Icons.arrow_back,
-                              color: Color(0xFFFF00FF), size: 18),
+                              color: _amber, size: 18),
                         ),
                       ),
                       Expanded(
                         child: Center(
                           child: Text(
                             'SELECT STAGE',
-                            style: GoogleFonts.pressStart2p(
+                            style: GoogleFonts.blackOpsOne(
                               textStyle: const TextStyle(
-                                color: Color(0xFFFFFF00),
-                                fontSize: 13,
+                                color: _amber,
+                                fontSize: 14,
                                 letterSpacing: 2,
                               ),
                             ),
@@ -108,8 +113,8 @@ class _CategorySelectScreenState extends State<CategorySelectScreen> {
                     children: Difficulty.values.map((d) {
                       final isSelected = _selectedDifficulty == d;
                       final dColor = d == Difficulty.easy
-                          ? const Color(0xFF00FF00)
-                          : const Color(0xFFFF0000);
+                          ? _screenGreen
+                          : _orange;
                       return Expanded(
                         child: Padding(
                           padding:
@@ -123,18 +128,16 @@ class _CategorySelectScreenState extends State<CategorySelectScreen> {
                                   const EdgeInsets.symmetric(vertical: 10),
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? dColor.withValues(alpha: 0.15)
+                                    ? dColor.withValues(alpha: 0.12)
                                     : Colors.black,
                                 border: Border.all(
-                                  color:
-                                      isSelected ? dColor : Colors.white24,
+                                  color: isSelected ? dColor : Colors.white24,
                                   width: isSelected ? 3 : 2,
                                 ),
                                 boxShadow: isSelected
                                     ? [
                                         BoxShadow(
-                                          color: dColor
-                                              .withValues(alpha: 0.3),
+                                          color: dColor.withValues(alpha: 0.3),
                                           blurRadius: 10,
                                         )
                                       ]
@@ -145,24 +148,25 @@ class _CategorySelectScreenState extends State<CategorySelectScreen> {
                                 children: [
                                   Text(
                                     d.displayName.toUpperCase(),
-                                    style: GoogleFonts.pressStart2p(
+                                    style: GoogleFonts.blackOpsOne(
                                       textStyle: TextStyle(
                                         color: isSelected
                                             ? dColor
                                             : Colors.white54,
-                                        fontSize: 10,
+                                        fontSize: 13,
+                                        letterSpacing: 1,
                                       ),
                                     ),
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
                                     '${d.optionCount} CHOICES',
-                                    style: GoogleFonts.pressStart2p(
+                                    style: GoogleFonts.vt323(
                                       textStyle: TextStyle(
                                         color: isSelected
                                             ? dColor.withValues(alpha: 0.8)
                                             : Colors.white24,
-                                        fontSize: 7,
+                                        fontSize: 16,
                                       ),
                                     ),
                                   ),
@@ -192,7 +196,8 @@ class _CategorySelectScreenState extends State<CategorySelectScreen> {
                       final category = QuizCategory.values[index];
                       final isLocked = category.isPaid && !isPaid;
                       final icon = _categoryIcons[category] ?? Icons.quiz;
-                      final color = _categoryColors[index % _categoryColors.length];
+                      final color = _categoryColors[
+                          index % _categoryColors.length];
 
                       return GestureDetector(
                         onTap: () {
@@ -202,10 +207,9 @@ class _CategorySelectScreenState extends State<CategorySelectScreen> {
                                 backgroundColor: Colors.black,
                                 content: Text(
                                   'UNLOCK FOR \$2.99!',
-                                  style: GoogleFonts.pressStart2p(
+                                  style: GoogleFonts.vt323(
                                     textStyle: const TextStyle(
-                                        color: Color(0xFFFFFF00),
-                                        fontSize: 9),
+                                        color: _amber, fontSize: 18),
                                   ),
                                 ),
                               ),
@@ -218,18 +222,18 @@ class _CategorySelectScreenState extends State<CategorySelectScreen> {
                           decoration: BoxDecoration(
                             color: isLocked
                                 ? Colors.black
-                                : color.withValues(alpha: 0.08),
+                                : color.withValues(alpha: 0.07),
                             border: Border.all(
                               color: isLocked
                                   ? Colors.white12
-                                  : color.withValues(alpha: 0.6),
+                                  : color.withValues(alpha: 0.5),
                               width: 2,
                             ),
                             boxShadow: isLocked
                                 ? null
                                 : [
                                     BoxShadow(
-                                      color: color.withValues(alpha: 0.15),
+                                      color: color.withValues(alpha: 0.12),
                                       blurRadius: 8,
                                     ),
                                   ],
@@ -251,12 +255,12 @@ class _CategorySelectScreenState extends State<CategorySelectScreen> {
                                     const SizedBox(height: 6),
                                     Text(
                                       category.displayName.toUpperCase(),
-                                      style: GoogleFonts.pressStart2p(
+                                      style: GoogleFonts.vt323(
                                         textStyle: TextStyle(
                                           color: isLocked
                                               ? Colors.grey[600]
-                                              : Colors.white,
-                                          fontSize: 7,
+                                              : Colors.white70,
+                                          fontSize: 18,
                                         ),
                                       ),
                                       textAlign: TextAlign.center,
@@ -281,15 +285,14 @@ class _CategorySelectScreenState extends State<CategorySelectScreen> {
                                     decoration: BoxDecoration(
                                       color: Colors.black,
                                       border: Border.all(
-                                          color: const Color(0xFF00FF00),
-                                          width: 1),
+                                          color: _screenGreen, width: 1),
                                     ),
                                     child: Text(
                                       'FREE',
-                                      style: GoogleFonts.pressStart2p(
+                                      style: GoogleFonts.vt323(
                                         textStyle: const TextStyle(
-                                          color: Color(0xFF00FF00),
-                                          fontSize: 6,
+                                          color: _screenGreen,
+                                          fontSize: 14,
                                         ),
                                       ),
                                     ),

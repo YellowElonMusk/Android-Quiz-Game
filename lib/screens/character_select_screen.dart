@@ -5,6 +5,10 @@ import '../models/combat.dart';
 import '../services/storage_service.dart';
 import '../widgets/fighter_widget.dart';
 
+const _amber = Color(0xFFFFB800);
+const _orange = Color(0xFFFF4500);
+const _arcadeBg = Color(0xFF0A0500);
+
 class CharacterSelectScreen extends StatefulWidget {
   final StorageService storageService;
   final ValueChanged<GameCharacter> onSelect;
@@ -28,14 +32,12 @@ class _CharacterSelectScreenState extends State<CharacterSelectScreen> {
     final character = GameCharacter.roster[_selectedIndex];
 
     return Scaffold(
-      backgroundColor: const Color(0xFF04020C),
+      backgroundColor: _arcadeBg,
       body: Stack(
         children: [
-          // Neon top border
           Positioned(
-            top: 0, left: 0, right: 0, height: 3,
-            child: Container(color: const Color(0xFF00FFFF)),
-          ),
+              top: 0, left: 0, right: 0, height: 3,
+              child: Container(color: _amber)),
           SafeArea(
             child: Column(
               children: [
@@ -44,10 +46,9 @@ class _CharacterSelectScreenState extends State<CharacterSelectScreen> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16, vertical: 12),
                   decoration: const BoxDecoration(
-                    color: Color(0xFF04020C),
+                    color: _arcadeBg,
                     border: Border(
-                      bottom: BorderSide(color: Color(0xFF00FFFF), width: 2),
-                    ),
+                        bottom: BorderSide(color: _amber, width: 2)),
                   ),
                   child: Row(
                     children: [
@@ -57,32 +58,28 @@ class _CharacterSelectScreenState extends State<CharacterSelectScreen> {
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
                             color: Colors.black,
-                            border: Border.all(
-                                color: const Color(0xFF00FFFF), width: 2),
+                            border: Border.all(color: _amber, width: 2),
                           ),
                           child: const Icon(Icons.arrow_back,
-                              color: Color(0xFF00FFFF), size: 18),
+                              color: _amber, size: 18),
                         ),
                       ),
                       Expanded(
                         child: Center(
-                          child: Text(
-                            'SELECT FIGHTER',
-                            style: GoogleFonts.pressStart2p(
-                              textStyle: const TextStyle(
-                                color: Color(0xFFFFFF00),
-                                fontSize: 13,
-                                letterSpacing: 2,
-                              ),
-                            ),
-                          ),
+                          child: Text('SELECT FIGHTER',
+                              style: GoogleFonts.blackOpsOne(
+                                textStyle: const TextStyle(
+                                    color: _amber,
+                                    fontSize: 14,
+                                    letterSpacing: 2),
+                              )),
                         ),
                       ),
                       const SizedBox(width: 30),
                     ],
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 // Preview
                 SizedBox(
                   height: 180,
@@ -95,13 +92,16 @@ class _CharacterSelectScreenState extends State<CharacterSelectScreen> {
                 const SizedBox(height: 4),
                 Text(
                   character.name.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.blackOpsOne(
                     textStyle: TextStyle(
-                      color: character.accentColor,
-                      fontSize: 16,
-                      shadows: [
+                      color: _amber,
+                      fontSize: 18,
+                      letterSpacing: 3,
+                      shadows: const [
                         Shadow(
-                            color: character.accentColor, blurRadius: 12),
+                            color: _orange,
+                            blurRadius: 0,
+                            offset: Offset(2, 2)),
                       ],
                     ),
                   ),
@@ -109,21 +109,22 @@ class _CharacterSelectScreenState extends State<CharacterSelectScreen> {
                 const SizedBox(height: 2),
                 Text(
                   character.hairStyle.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.vt323(
                     textStyle: const TextStyle(
-                        color: Colors.white38, fontSize: 7),
+                        color: Colors.white38, fontSize: 18),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 14),
                 // Character grid
                 Expanded(
                   child: GridView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
                       childAspectRatio: 1.6,
                     ),
                     itemCount: GameCharacter.roster.length,
@@ -138,13 +139,10 @@ class _CharacterSelectScreenState extends State<CharacterSelectScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 backgroundColor: Colors.black,
-                                content: Text(
-                                  'UNLOCK FOR \$2.99!',
-                                  style: GoogleFonts.pressStart2p(
-                                    textStyle: const TextStyle(
-                                        color: Color(0xFFFFFF00), fontSize: 9),
-                                  ),
-                                ),
+                                content: Text('UNLOCK FOR \$2.99!',
+                                    style: GoogleFonts.vt323(
+                                        textStyle: const TextStyle(
+                                            color: _amber, fontSize: 18))),
                               ),
                             );
                             return;
@@ -152,26 +150,24 @@ class _CharacterSelectScreenState extends State<CharacterSelectScreen> {
                           setState(() => _selectedIndex = index);
                         },
                         child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 150),
+                          duration: const Duration(milliseconds: 130),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? c.accentColor.withValues(alpha: 0.15)
+                                ? _amber.withValues(alpha: 0.10)
                                 : Colors.black,
                             border: Border.all(
                               color: isLocked
                                   ? Colors.white12
                                   : isSelected
-                                      ? c.accentColor
-                                      : const Color(0xFF00FFFF)
-                                          .withValues(alpha: 0.3),
+                                      ? _amber
+                                      : _amber.withValues(alpha: 0.25),
                               width: isSelected ? 3 : 2,
                             ),
                             boxShadow: isSelected
                                 ? [
                                     BoxShadow(
-                                      color: c.accentColor
-                                          .withValues(alpha: 0.4),
-                                      blurRadius: 12,
+                                      color: _amber.withValues(alpha: 0.35),
+                                      blurRadius: 10,
                                     )
                                   ]
                                 : null,
@@ -180,24 +176,29 @@ class _CharacterSelectScreenState extends State<CharacterSelectScreen> {
                             alignment: Alignment.center,
                             children: [
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     Icons.person,
                                     size: 32,
                                     color: isLocked
                                         ? Colors.grey[700]
-                                        : c.accentColor,
+                                        : isSelected
+                                            ? _amber
+                                            : _amber.withValues(alpha: 0.5),
                                   ),
-                                  const SizedBox(height: 6),
+                                  const SizedBox(height: 5),
                                   Text(
                                     c.name.toUpperCase(),
-                                    style: GoogleFonts.pressStart2p(
+                                    style: GoogleFonts.vt323(
                                       textStyle: TextStyle(
                                         color: isLocked
                                             ? Colors.grey[600]
-                                            : Colors.white,
-                                        fontSize: 8,
+                                            : isSelected
+                                                ? _amber
+                                                : Colors.white70,
+                                        fontSize: 18,
                                       ),
                                     ),
                                   ),
@@ -205,10 +206,9 @@ class _CharacterSelectScreenState extends State<CharacterSelectScreen> {
                               ),
                               if (isLocked)
                                 Positioned(
-                                  top: 6,
-                                  right: 6,
+                                  top: 5, right: 5,
                                   child: Icon(Icons.lock,
-                                      color: Colors.grey[500], size: 16),
+                                      color: Colors.grey[500], size: 14),
                                 ),
                             ],
                           ),
@@ -217,39 +217,32 @@ class _CharacterSelectScreenState extends State<CharacterSelectScreen> {
                     },
                   ),
                 ),
-                // Confirm button
+                // Confirm
                 Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(18),
                   child: GestureDetector(
-                    onTap: () {
-                      widget.onSelect(GameCharacter.roster[_selectedIndex]);
-                    },
+                    onTap: () =>
+                        widget.onSelect(GameCharacter.roster[_selectedIndex]),
                     child: Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      padding: const EdgeInsets.symmetric(vertical: 13),
                       decoration: BoxDecoration(
                         color: Colors.black,
-                        border: Border.all(
-                            color: const Color(0xFFFFFF00), width: 3),
+                        border: Border.all(color: _amber, width: 3),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFFFFFF00)
-                                .withValues(alpha: 0.4),
-                            blurRadius: 12,
-                          ),
+                              color: _amber.withValues(alpha: 0.4),
+                              blurRadius: 14)
                         ],
                       ),
                       child: Center(
-                        child: Text(
-                          'FIGHT!',
-                          style: GoogleFonts.pressStart2p(
-                            textStyle: const TextStyle(
-                              color: Color(0xFFFFFF00),
-                              fontSize: 16,
-                              letterSpacing: 3,
-                            ),
-                          ),
-                        ),
+                        child: Text('FIGHT!',
+                            style: GoogleFonts.blackOpsOne(
+                              textStyle: const TextStyle(
+                                  color: _amber,
+                                  fontSize: 18,
+                                  letterSpacing: 4),
+                            )),
                       ),
                     ),
                   ),

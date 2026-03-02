@@ -17,11 +17,12 @@ class HpBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // SF2-authentic HP gradient: green → orange → red
     final hpColor = percent > 0.5
-        ? const Color(0xFF00FF00)
+        ? const Color(0xFF39FF14)
         : percent > 0.25
-            ? Colors.orange
-            : Colors.red;
+            ? const Color(0xFFFF8C00)
+            : const Color(0xFFFF1A00);
 
     return Column(
       crossAxisAlignment:
@@ -30,11 +31,8 @@ class HpBar extends StatelessWidget {
       children: [
         Text(
           label.toUpperCase(),
-          style: GoogleFonts.pressStart2p(
-            textStyle: TextStyle(
-              color: hpColor,
-              fontSize: 7,
-            ),
+          style: GoogleFonts.vt323(
+            textStyle: TextStyle(color: hpColor, fontSize: 16),
           ),
         ),
         const SizedBox(height: 3),
@@ -44,12 +42,12 @@ class HpBar extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.black,
             border: Border.all(
-              color: hpColor.withValues(alpha: 0.8),
+              color: hpColor.withValues(alpha: 0.7),
               width: 2,
             ),
             boxShadow: [
               BoxShadow(
-                color: hpColor.withValues(alpha: 0.3),
+                color: hpColor.withValues(alpha: 0.25),
                 blurRadius: 6,
               ),
             ],
@@ -61,13 +59,13 @@ class HpBar extends StatelessWidget {
                 alignment:
                     alignRight ? Alignment.centerRight : Alignment.centerLeft,
                 child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 400),
+                  duration: const Duration(milliseconds: 350),
                   curve: Curves.easeOut,
                   width: 126 * percent.clamp(0.0, 1.0),
                   color: hpColor,
                 ),
               ),
-              // Segment dividers
+              // Segment dividers — 10 blocks like SF2
               Row(
                 children: List.generate(
                   10,

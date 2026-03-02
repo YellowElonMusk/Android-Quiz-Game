@@ -12,6 +12,11 @@ import 'character_select_screen.dart';
 import 'category_select_screen.dart';
 import 'fight_screen.dart';
 
+const _amber = Color(0xFFFFB800);
+const _orange = Color(0xFFFF4500);
+const _screenGreen = Color(0xFF39FF14);
+const _arcadeBg = Color(0xFF0A0500);
+
 class MainMenuScreen extends StatefulWidget {
   final StorageService storageService;
   final QuestionService questionService;
@@ -30,46 +35,42 @@ class MainMenuScreen extends StatefulWidget {
 
 class _MainMenuScreenState extends State<MainMenuScreen>
     with TickerProviderStateMixin {
-  late AnimationController _blinkController;
-  late AnimationController _titleController;
-  late AnimationController _bgController;
+  late AnimationController _blinkCtrl;
+  late AnimationController _titleCtrl;
+  late AnimationController _bgCtrl;
 
   @override
   void initState() {
     super.initState();
-    _blinkController = AnimationController(
+    _blinkCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 700),
     )..repeat(reverse: true);
-    _titleController = AnimationController(
+    _titleCtrl = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
     )..repeat(reverse: true);
-    _bgController = AnimationController(
+    _bgCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 8),
+      duration: const Duration(seconds: 10),
     )..repeat();
   }
 
   @override
   void dispose() {
-    _blinkController.dispose();
-    _titleController.dispose();
-    _bgController.dispose();
+    _blinkCtrl.dispose();
+    _titleCtrl.dispose();
+    _bgCtrl.dispose();
     super.dispose();
   }
 
   void _startGame() {
-    if (!widget.storageService.canPlay) {
-      _showPaywall();
-      return;
-    }
-
+    if (!widget.storageService.canPlay) { _showPaywall(); return; }
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => CharacterSelectScreen(
           storageService: widget.storageService,
-          onSelect: (player) => _onCharacterSelected(player),
+          onSelect: _onCharacterSelected,
         ),
       ),
     );
@@ -80,35 +81,27 @@ class _MainMenuScreenState extends State<MainMenuScreen>
       MaterialPageRoute(
         builder: (_) => CategorySelectScreen(
           storageService: widget.storageService,
-          onSelect: (category, difficulty) =>
-              _onCategorySelected(player, category, difficulty),
+          onSelect: (cat, diff) => _onCategorySelected(player, cat, diff),
         ),
       ),
     );
   }
 
   Future<void> _onCategorySelected(
-    GameCharacter player,
-    QuizCategory category,
-    Difficulty difficulty,
-  ) async {
-    await widget.questionService.loadCategory(category);
-
-    final opponents = GameCharacter.roster
-        .where((c) => c.id != player.id)
-        .toList();
+      GameCharacter player, QuizCategory cat, Difficulty diff) async {
+    await widget.questionService.loadCategory(cat);
+    final opponents =
+        GameCharacter.roster.where((c) => c.id != player.id).toList();
     final opponent = opponents[Random().nextInt(opponents.length)];
-
     await widget.storageService.useRun();
-
     if (mounted) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (_) => FightScreen(
             player: player,
             opponent: opponent,
-            category: category,
-            difficulty: difficulty,
+            category: cat,
+            difficulty: diff,
             questionService: widget.questionService,
             audioService: widget.audioService,
           ),
@@ -121,63 +114,57 @@ class _MainMenuScreenState extends State<MainMenuScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF04020C),
-        shape: RoundedRectangleBorder(
-          side: const BorderSide(color: Color(0xFFFF00FF), width: 3),
+        backgroundColor: _arcadeBg,
+        shape: const RoundedRectangleBorder(
+          side: BorderSide(color: _orange, width: 3),
           borderRadius: BorderRadius.zero,
         ),
         title: Text(
           'GAME OVER',
-          style: GoogleFonts.pressStart2p(
-            textStyle: const TextStyle(color: Color(0xFFFFFF00), fontSize: 16),
+          style: GoogleFonts.blackOpsOne(
+            textStyle:
+                const TextStyle(color: _amber, fontSize: 18, letterSpacing: 2),
           ),
         ),
         content: Text(
           'FREE RUNS USED UP!\n\nUNLOCK UNLIMITED RUNS + ALL CONTENT FOR \$2.99',
-          style: GoogleFonts.pressStart2p(
+          style: GoogleFonts.vt323(
             textStyle: const TextStyle(
-                color: Colors.white70, fontSize: 9, height: 1.8),
+                color: Colors.white70, fontSize: 20, height: 1.5),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
-              'MAYBE LATER',
-              style: GoogleFonts.pressStart2p(
-                textStyle:
-                    const TextStyle(color: Colors.grey, fontSize: 9),
-              ),
-            ),
+            child: Text('LATER',
+                style: GoogleFonts.vt323(
+                    textStyle:
+                        const TextStyle(color: Colors.grey, fontSize: 18))),
           ),
-          ElevatedButton(
-            onPressed: () {
+          GestureDetector(
+            onTap: () {
               widget.storageService.setPaid(true);
               Navigator.pop(context);
               setState(() {});
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: Colors.black,
-                  content: Text(
-                    'FULL VERSION UNLOCKED!',
-                    style: GoogleFonts.pressStart2p(
-                      textStyle: const TextStyle(
-                          color: Color(0xFF00FF00), fontSize: 10),
-                    ),
-                  ),
-                ),
-              );
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                backgroundColor: Colors.black,
+                content: Text('FULL VERSION UNLOCKED!',
+                    style: GoogleFonts.vt323(
+                        textStyle: const TextStyle(
+                            color: _screenGreen, fontSize: 20))),
+              ));
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              side: const BorderSide(color: Color(0xFFFFFF00), width: 2),
-            ),
-            child: Text(
-              'UNLOCK \$2.99',
-              style: GoogleFonts.pressStart2p(
-                textStyle: const TextStyle(
-                    color: Color(0xFFFFFF00), fontSize: 9),
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                border: Border.all(color: _amber, width: 2),
               ),
+              child: Text('UNLOCK \$2.99',
+                  style: GoogleFonts.vt323(
+                      textStyle:
+                          const TextStyle(color: _amber, fontSize: 18))),
             ),
           ),
         ],
@@ -188,90 +175,83 @@ class _MainMenuScreenState extends State<MainMenuScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF04020C),
+      backgroundColor: _arcadeBg,
       body: Stack(
         children: [
-          // Animated background
+          // Animated warm background
           AnimatedBuilder(
-            animation: _bgController,
-            builder: (context, child) {
-              return CustomPaint(
-                size: Size.infinite,
-                painter: _ArcadeBgPainter(_bgController.value),
-              );
-            },
+            animation: _bgCtrl,
+            builder: (context, _) => CustomPaint(
+              size: Size.infinite,
+              painter: _CabinetBgPainter(_bgCtrl.value),
+            ),
           ),
           // Scanlines
-          Positioned.fill(
-            child: CustomPaint(painter: _MenuScanlinesPainter()),
-          ),
-          // Neon top border
+          Positioned.fill(child: CustomPaint(painter: _ScanlinesPainter())),
+          // Amber top strip
           Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 3,
-            child: Container(color: const Color(0xFF00FFFF)),
+            top: 0, left: 0, right: 0, height: 3,
+            child: Container(color: _amber),
           ),
-          // Neon bottom border
+          // Orange bottom strip
           Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: 3,
-            child: Container(color: const Color(0xFFFF00FF)),
+            bottom: 0, left: 0, right: 0, height: 3,
+            child: Container(color: _orange),
           ),
-          // Content
           SafeArea(
             child: Column(
               children: [
                 const Spacer(flex: 1),
-                // INSERT COIN blink
+                // INSERT COIN — blinks amber
                 AnimatedBuilder(
-                  animation: _blinkController,
-                  builder: (context, child) {
-                    return Opacity(
-                      opacity: _blinkController.value > 0.5 ? 1.0 : 0.0,
-                      child: child,
-                    );
-                  },
+                  animation: _blinkCtrl,
+                  builder: (context, child) => Opacity(
+                    opacity: _blinkCtrl.value > 0.5 ? 1.0 : 0.0,
+                    child: child,
+                  ),
                   child: Text(
-                    '- INSERT COIN -',
-                    style: GoogleFonts.pressStart2p(
+                    '— INSERT COIN —',
+                    style: GoogleFonts.vt323(
                       textStyle: const TextStyle(
-                        color: Color(0xFFFFFF00),
-                        fontSize: 10,
-                        letterSpacing: 2,
+                        color: _amber,
+                        fontSize: 22,
+                        letterSpacing: 3,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                // Title
+                const SizedBox(height: 14),
+                // Title with slow pulse
                 AnimatedBuilder(
-                  animation: _titleController,
-                  builder: (context, child) {
-                    final scale = 1.0 + _titleController.value * 0.04;
-                    return Transform.scale(scale: scale, child: child);
-                  },
+                  animation: _titleCtrl,
+                  builder: (context, child) => Transform.scale(
+                    scale: 1.0 + _titleCtrl.value * 0.03,
+                    child: child,
+                  ),
                   child: Column(
                     children: [
                       Text(
                         'QUIZ',
-                        style: GoogleFonts.pressStart2p(
+                        style: GoogleFonts.blackOpsOne(
                           textStyle: TextStyle(
-                            fontSize: 42,
-                            color: const Color(0xFFFFFF00),
+                            fontSize: 52,
+                            color: _amber,
                             shadows: [
+                              // Solid offset — real arcade marquee style
                               const Shadow(
-                                color: Color(0xFFFFFF00),
-                                blurRadius: 24,
+                                color: _orange,
+                                blurRadius: 0,
+                                offset: Offset(4, 4),
                               ),
+                              const Shadow(
+                                color: Colors.black,
+                                blurRadius: 0,
+                                offset: Offset(7, 7),
+                              ),
+                              // Soft outer glow
                               Shadow(
-                                color: const Color(0xFFFF8000)
-                                    .withValues(alpha: 0.7),
-                                blurRadius: 48,
-                                offset: const Offset(3, 4),
+                                color: _amber.withValues(alpha: 0.35),
+                                blurRadius: 28,
                               ),
                             ],
                           ),
@@ -279,19 +259,24 @@ class _MainMenuScreenState extends State<MainMenuScreen>
                       ),
                       Text(
                         'FIGHTER',
-                        style: GoogleFonts.pressStart2p(
+                        style: GoogleFonts.blackOpsOne(
                           textStyle: TextStyle(
-                            fontSize: 28,
-                            color: const Color(0xFF00FFFF),
+                            fontSize: 36,
+                            color: Colors.white,
                             shadows: [
                               const Shadow(
-                                color: Color(0xFF00FFFF),
-                                blurRadius: 20,
+                                color: _orange,
+                                blurRadius: 0,
+                                offset: Offset(3, 3),
+                              ),
+                              const Shadow(
+                                color: Colors.black,
+                                blurRadius: 0,
+                                offset: Offset(5, 5),
                               ),
                               Shadow(
-                                color: const Color(0xFF0080FF)
-                                    .withValues(alpha: 0.6),
-                                blurRadius: 40,
+                                color: _orange.withValues(alpha: 0.3),
+                                blurRadius: 20,
                               ),
                             ],
                           ),
@@ -300,25 +285,24 @@ class _MainMenuScreenState extends State<MainMenuScreen>
                     ],
                   ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 4),
                 Text(
                   'STUDY NOTHING. FIGHT EVERYONE.',
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.vt323(
                     textStyle: const TextStyle(
-                      color: Color(0xFFFF00FF),
-                      fontSize: 7,
-                      letterSpacing: 1,
+                      color: _orange,
+                      fontSize: 16,
+                      letterSpacing: 2,
                     ),
                   ),
                 ),
                 const Spacer(flex: 1),
-                // Two fighters facing off
+                // Fighters
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: 140,
-                      width: 100,
+                      height: 140, width: 100,
                       child: FighterWidget(
                         character: GameCharacter.roster[0],
                         animState: AnimationState.idle,
@@ -329,25 +313,22 @@ class _MainMenuScreenState extends State<MainMenuScreen>
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
                         'VS',
-                        style: GoogleFonts.pressStart2p(
-                          textStyle: TextStyle(
-                            color: Colors.red,
-                            fontSize: 24,
+                        style: GoogleFonts.blackOpsOne(
+                          textStyle: const TextStyle(
+                            color: Color(0xFFFF1A00),
+                            fontSize: 28,
                             shadows: [
-                              const Shadow(
-                                  color: Colors.redAccent, blurRadius: 16),
                               Shadow(
-                                color: Colors.red.withValues(alpha: 0.5),
-                                blurRadius: 32,
-                              ),
+                                  color: Colors.black,
+                                  blurRadius: 0,
+                                  offset: Offset(3, 3)),
                             ],
                           ),
                         ),
                       ),
                     ),
                     SizedBox(
-                      height: 140,
-                      width: 100,
+                      height: 140, width: 100,
                       child: FighterWidget(
                         character: GameCharacter.roster[2],
                         animState: AnimationState.idle,
@@ -362,45 +343,35 @@ class _MainMenuScreenState extends State<MainMenuScreen>
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Column(
                     children: [
-                      _menuButton('FIGHT!', const Color(0xFFFFFF00),
-                          Colors.black, _startGame),
+                      _menuBtn('FIGHT!', _amber, _startGame),
                       const SizedBox(height: 12),
-                      _menuButton('SETTINGS', const Color(0xFF00FFFF),
-                          Colors.black, _showSettings),
+                      _menuBtn('SETTINGS', Colors.white54, _showSettings),
                       if (!widget.storageService.isPaid) ...[
                         const SizedBox(height: 12),
-                        _menuButton(
-                          'UNLOCK FULL GAME',
-                          const Color(0xFFFF00FF),
-                          Colors.black,
-                          _showPaywall,
-                        ),
+                        _menuBtn('UNLOCK FULL GAME', _orange, _showPaywall),
                       ],
                     ],
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 if (!widget.storageService.isPaid)
                   Text(
                     'FREE RUNS: ${widget.storageService.freeRunsRemaining}',
-                    style: GoogleFonts.pressStart2p(
-                      textStyle: const TextStyle(
-                        color: Color(0xFFFF8000),
-                        fontSize: 8,
-                      ),
+                    style: GoogleFonts.vt323(
+                      textStyle:
+                          const TextStyle(color: _orange, fontSize: 20),
                     ),
                   ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 // Stats
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _statChip('WINS', '${widget.storageService.totalWins}',
-                        const Color(0xFF00FF00)),
-                    const SizedBox(width: 32),
+                    _statChip('WINS',
+                        '${widget.storageService.totalWins}', _screenGreen),
+                    const SizedBox(width: 36),
                     _statChip('STREAK',
-                        '${widget.storageService.highStreak}X',
-                        const Color(0xFFFF8000)),
+                        '${widget.storageService.highStreak}X', _orange),
                   ],
                 ),
                 const Spacer(flex: 1),
@@ -412,33 +383,25 @@ class _MainMenuScreenState extends State<MainMenuScreen>
     );
   }
 
-  Widget _menuButton(
-      String text, Color accentColor, Color textColor, VoidCallback onTap) {
+  Widget _menuBtn(String text, Color accent, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: const EdgeInsets.symmetric(vertical: 13),
         decoration: BoxDecoration(
           color: Colors.black,
-          border: Border.all(color: accentColor, width: 3),
+          border: Border.all(color: accent, width: 3),
           boxShadow: [
-            BoxShadow(
-              color: accentColor.withValues(alpha: 0.4),
-              blurRadius: 12,
-              spreadRadius: 1,
-            ),
+            BoxShadow(color: accent.withValues(alpha: 0.35), blurRadius: 12),
           ],
         ),
         child: Center(
           child: Text(
             text,
-            style: GoogleFonts.pressStart2p(
-              textStyle: TextStyle(
-                color: accentColor,
-                fontSize: 14,
-                letterSpacing: 2,
-              ),
+            style: GoogleFonts.blackOpsOne(
+              textStyle:
+                  TextStyle(color: accent, fontSize: 16, letterSpacing: 2),
             ),
           ),
         ),
@@ -449,20 +412,13 @@ class _MainMenuScreenState extends State<MainMenuScreen>
   Widget _statChip(String label, String value, Color color) {
     return Column(
       children: [
-        Text(
-          value,
-          style: GoogleFonts.pressStart2p(
-            textStyle: TextStyle(color: color, fontSize: 18),
-          ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          label,
-          style: GoogleFonts.pressStart2p(
-            textStyle:
-                const TextStyle(color: Colors.white38, fontSize: 7),
-          ),
-        ),
+        Text(value,
+            style: GoogleFonts.vt323(
+                textStyle: TextStyle(color: color, fontSize: 36))),
+        Text(label,
+            style: GoogleFonts.vt323(
+                textStyle:
+                    const TextStyle(color: Colors.white38, fontSize: 16))),
       ],
     );
   }
@@ -470,77 +426,58 @@ class _MainMenuScreenState extends State<MainMenuScreen>
   void _showSettings() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF04020C),
+      backgroundColor: _arcadeBg,
       shape: const RoundedRectangleBorder(
-        side: BorderSide(color: Color(0xFF00FFFF), width: 2),
+        side: BorderSide(color: _amber, width: 2),
         borderRadius: BorderRadius.zero,
       ),
       builder: (context) {
         return StatefulBuilder(
-          builder: (context, setSheetState) {
-            return Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'SETTINGS',
-                    style: GoogleFonts.pressStart2p(
+          builder: (context, setSheet) => Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('SETTINGS',
+                    style: GoogleFonts.blackOpsOne(
                       textStyle: const TextStyle(
-                        color: Color(0xFF00FFFF),
-                        fontSize: 14,
-                        letterSpacing: 3,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  _settingsTile(
-                    'MUSIC',
-                    widget.audioService.musicEnabled,
-                    (v) => setSheetState(() => widget.audioService.toggleMusic()),
-                  ),
-                  _settingsTile(
-                    'SOUND FX',
-                    widget.audioService.sfxEnabled,
-                    (v) => setSheetState(() => widget.audioService.toggleSfx()),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'QuizFighter v1.0 by RadiantBots',
-                    style: GoogleFonts.pressStart2p(
-                      textStyle: const TextStyle(
-                          color: Colors.white24, fontSize: 7),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                ],
-              ),
-            );
-          },
+                          color: _amber, fontSize: 18, letterSpacing: 3),
+                    )),
+                const SizedBox(height: 20),
+                _settingRow('MUSIC', widget.audioService.musicEnabled,
+                    (v) => setSheet(() => widget.audioService.toggleMusic())),
+                _settingRow('SOUND FX', widget.audioService.sfxEnabled,
+                    (v) => setSheet(() => widget.audioService.toggleSfx())),
+                const SizedBox(height: 12),
+                Text('QuizFighter v1.0 · RadiantBots',
+                    style: GoogleFonts.vt323(
+                        textStyle: const TextStyle(
+                            color: Colors.white24, fontSize: 16))),
+                const SizedBox(height: 12),
+              ],
+            ),
+          ),
         );
       },
     );
   }
 
-  Widget _settingsTile(
+  Widget _settingRow(
       String label, bool value, ValueChanged<bool> onChanged) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: GoogleFonts.pressStart2p(
-              textStyle: const TextStyle(color: Colors.white, fontSize: 10),
-            ),
-          ),
+          Text(label,
+              style: GoogleFonts.vt323(
+                  textStyle:
+                      const TextStyle(color: Colors.white, fontSize: 22))),
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: const Color(0xFFFFFF00),
-            activeTrackColor:
-                const Color(0xFFFFFF00).withValues(alpha: 0.3),
+            activeColor: _amber,
+            activeTrackColor: _amber.withValues(alpha: 0.3),
           ),
         ],
       ),
@@ -550,32 +487,36 @@ class _MainMenuScreenState extends State<MainMenuScreen>
 
 // ─── Background painters ──────────────────────────────────────────────────────
 
-class _ArcadeBgPainter extends CustomPainter {
+/// Warm cabinet background: drifting warm-tinted starfield + amber grid floor
+class _CabinetBgPainter extends CustomPainter {
   final double t;
-  _ArcadeBgPainter(this.t);
+  _CabinetBgPainter(this.t);
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Animated star field
     final rand = Random(42);
     final paint = Paint()..style = PaintingStyle.fill;
-    for (int i = 0; i < 60; i++) {
+
+    // Warm starfield — amber-tinted twinkle
+    for (int i = 0; i < 50; i++) {
       final x = rand.nextDouble() * size.width;
       final y = rand.nextDouble() * size.height;
-      final twinkle = sin(t * 2 * pi + i * 0.7).abs();
+      final twinkle = sin(t * 2 * pi + i * 0.9).abs();
       paint.color =
-          Colors.white.withValues(alpha: 0.05 + twinkle * 0.15);
-      canvas.drawCircle(Offset(x, y), rand.nextDouble() * 1.5 + 0.5, paint);
+          const Color(0xFFFFB800).withValues(alpha: 0.03 + twinkle * 0.08);
+      canvas.drawCircle(
+          Offset(x, y), rand.nextDouble() * 1.2 + 0.4, paint);
     }
 
-    // Bottom grid glow
+    // Amber grid floor at bottom
     final gridPaint = Paint()
-      ..color = const Color(0xFF00FFFF).withValues(alpha: 0.06)
+      ..color = const Color(0xFFFFB800).withValues(alpha: 0.07)
       ..strokeWidth = 1;
-    for (double y = size.height * 0.7; y < size.height; y += 20) {
+    final floorY = size.height * 0.72;
+    for (double y = floorY; y < size.height; y += 18) {
       canvas.drawLine(Offset(0, y), Offset(size.width, y), gridPaint);
     }
-    final vp = Offset(size.width / 2, size.height * 0.7);
+    final vp = Offset(size.width / 2, floorY);
     for (int i = 0; i <= 8; i++) {
       final x = size.width * i / 8;
       canvas.drawLine(Offset(x, size.height), vp, gridPaint);
@@ -583,10 +524,10 @@ class _ArcadeBgPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_ArcadeBgPainter old) => old.t != t;
+  bool shouldRepaint(_CabinetBgPainter old) => old.t != t;
 }
 
-class _MenuScanlinesPainter extends CustomPainter {
+class _ScanlinesPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
@@ -598,5 +539,5 @@ class _MenuScanlinesPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_MenuScanlinesPainter old) => false;
+  bool shouldRepaint(_ScanlinesPainter old) => false;
 }

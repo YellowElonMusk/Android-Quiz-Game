@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/question.dart';
 
+// Question panel deliberately uses a cooler, more clinical background
+// to contrast with the warm arcade arena above it.
+// The exam-bubble answer buttons are the product signature:
+// academic dread + arcade urgency, physically expressed.
+
 class QuestionPanel extends StatefulWidget {
   final Question question;
   final ValueChanged<int> onAnswer;
@@ -26,12 +31,11 @@ class QuestionPanel extends StatefulWidget {
 
 class _QuestionPanelState extends State<QuestionPanel> {
   int? _selectedIndex;
+  int? _pressedIndex; // tracks physical press for scale animation
   late int _timeRemaining;
   Timer? _timer;
   bool _answered = false;
-
   late List<int> _visibleIndices;
-
   final Random _random = Random();
 
   @override
@@ -48,6 +52,7 @@ class _QuestionPanelState extends State<QuestionPanel> {
     if (oldWidget.question != widget.question) {
       _timer?.cancel();
       _selectedIndex = null;
+      _pressedIndex = null;
       _answered = false;
       _timeRemaining = widget.timeLimit;
       _buildVisibleIndices();
@@ -64,27 +69,21 @@ class _QuestionPanelState extends State<QuestionPanel> {
     final optionCount = widget.difficulty.optionCount;
     final totalOptions = widget.question.options.length;
     final correct = widget.question.correctIndex;
-
     if (optionCount >= totalOptions) {
       _visibleIndices = List.generate(totalOptions, (i) => i);
     } else {
-      final wrongIndices =
-          List.generate(totalOptions, (i) => i).where((i) => i != correct).toList();
-      wrongIndices.shuffle(_random);
-      _visibleIndices = [correct, ...wrongIndices.take(optionCount - 1)];
-      _visibleIndices.sort();
+      final wrong = List.generate(totalOptions, (i) => i)
+          .where((i) => i != correct)
+          .toList()
+        ..shuffle(_random);
+      _visibleIndices = [correct, ...wrong.take(optionCount - 1)]..sort();
     }
   }
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (!mounted) {
-        timer.cancel();
-        return;
-      }
-      setState(() {
-        _timeRemaining--;
-      });
+      if (!mounted) { timer.cancel(); return; }
+      setState(() => _timeRemaining--);
       if (_timeRemaining <= 0) {
         timer.cancel();
         if (!_answered) {
@@ -107,6 +106,7 @@ class _QuestionPanelState extends State<QuestionPanel> {
     _timer?.cancel();
     setState(() {
       _selectedIndex = originalIndex;
+      _pressedIndex = null;
     });
     Future.delayed(const Duration(milliseconds: 600), () {
       if (mounted) widget.onAnswer(originalIndex);
@@ -115,21 +115,21 @@ class _QuestionPanelState extends State<QuestionPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final labels = ['A', 'B', 'C', 'D'];
+    const labels = ['A', 'B', 'C', 'D'];
     final count = _visibleIndices.length;
     final crossAxisCount = count <= 2 ? 1 : 2;
-    final aspectRatio = count <= 2 ? 5.0 : 3.0;
+    final aspectRatio = count <= 2 ? 4.2 : 2.8;
 
     final timerFraction = _timeRemaining / widget.timeLimit;
-    final timerColor =
-        _timeRemaining > 5 ? const Color(0xFF00FF00) : Colors.red;
+    final urgent = _timeRemaining <= 5;
+    final timerColor = urgent ? const Color(0xFFFF1A00) : const Color(0xFF39FF14);
 
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
       decoration: const BoxDecoration(
-        color: Color(0xFF04020C),
+        color: Color(0xFF080C18), // deliberately cooler than warm arena above
         border: Border(
-          top: BorderSide(color: Color(0xFFFF00FF), width: 3),
+          top: BorderSide(color: Color(0xFFFF4500), width: 3),
         ),
       ),
       child: Column(
@@ -140,8 +140,8 @@ class _QuestionPanelState extends State<QuestionPanel> {
             children: [
               Text(
                 'TIME',
-                style: GoogleFonts.pressStart2p(
-                  textStyle: TextStyle(color: timerColor, fontSize: 7),
+                style: GoogleFonts.vt323(
+                  textStyle: TextStyle(color: timerColor, fontSize: 20),
                 ),
               ),
               const SizedBox(width: 8),
@@ -153,7 +153,7 @@ class _QuestionPanelState extends State<QuestionPanel> {
                       decoration: BoxDecoration(
                         color: Colors.black,
                         border: Border.all(
-                            color: timerColor.withValues(alpha: 0.6),
+                            color: timerColor.withValues(alpha: 0.5),
                             width: 1),
                       ),
                       child: Align(
@@ -172,22 +172,30 @@ class _QuestionPanelState extends State<QuestionPanel> {
               ),
               const SizedBox(width: 8),
               Text(
-                '${_timeRemaining}',
-                style: GoogleFonts.pressStart2p(
+                '$_timeRemaining',
+                style: GoogleFonts.vt323(
                   textStyle: TextStyle(
                     color: timerColor,
-                    fontSize: 12,
+                    fontSize: 28,
+                    shadows: urgent
+                        ? [
+                            BoxShadow(
+                              color: timerColor.withValues(alpha: 0.6),
+                              blurRadius: 8,
+                            )
+                          ]
+                        : null,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
-          // Question text
+          const SizedBox(height: 8),
+          // Question text — readable, slightly warm
           Text(
             widget.question.text,
             style: const TextStyle(
-              color: Colors.white,
+              color: Color(0xFFF0E8D0), // warm off-white, like exam paper
               fontSize: 14,
               fontWeight: FontWeight.w600,
               height: 1.3,
@@ -195,7 +203,7 @@ class _QuestionPanelState extends State<QuestionPanel> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 10),
-          // Options grid
+          // Answer buttons — exam bubble style
           GridView.count(
             crossAxisCount: crossAxisCount,
             shrinkWrap: true,
@@ -204,62 +212,118 @@ class _QuestionPanelState extends State<QuestionPanel> {
             crossAxisSpacing: 8,
             childAspectRatio: aspectRatio,
             children: _visibleIndices.map((origIdx) {
-              final isSelected = _selectedIndex == origIdx;
-              final isCorrect = origIdx == widget.question.correctIndex;
-              final showResult = _answered;
+              return _buildAnswerButton(origIdx, labels);
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
 
-              Color bgColor = Colors.black;
-              Color borderColor = const Color(0xFF00FFFF).withValues(alpha: 0.5);
-              Color textColor = Colors.white;
+  Widget _buildAnswerButton(int origIdx, List<String> labels) {
+    final isSelected = _selectedIndex == origIdx;
+    final isCorrect = origIdx == widget.question.correctIndex;
+    final showResult = _answered;
+    final isPressed = _pressedIndex == origIdx;
 
-              if (showResult && isCorrect) {
-                bgColor = const Color(0xFF00AA00).withValues(alpha: 0.3);
-                borderColor = const Color(0xFF00FF00);
-                textColor = const Color(0xFF00FF00);
-              } else if (showResult && isSelected && !isCorrect) {
-                bgColor = Colors.red.withValues(alpha: 0.25);
-                borderColor = Colors.red;
-                textColor = Colors.red;
-              } else if (isSelected) {
-                bgColor = const Color(0xFF00FFFF).withValues(alpha: 0.15);
-                borderColor = const Color(0xFFFFFF00);
-                textColor = const Color(0xFFFFFF00);
-              }
+    // Color logic: result > selected > default
+    Color bubbleFill = Colors.transparent;
+    Color borderColor = const Color(0xFFFFB800).withValues(alpha: 0.5);
+    Color textColor = const Color(0xFFD0C8A0); // parchment
+    Color bubbleBorderColor = const Color(0xFFFFB800).withValues(alpha: 0.5);
 
-              return GestureDetector(
-                onTap: () => _selectAnswer(origIdx),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  decoration: BoxDecoration(
-                    color: bgColor,
-                    border: Border.all(color: borderColor, width: 2),
-                    boxShadow: isSelected
-                        ? [
-                            BoxShadow(
-                              color: borderColor.withValues(alpha: 0.4),
-                              blurRadius: 8,
-                            )
-                          ]
-                        : null,
-                  ),
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
+    if (showResult && isCorrect) {
+      bubbleFill = const Color(0xFF39FF14).withValues(alpha: 0.25);
+      borderColor = const Color(0xFF39FF14);
+      bubbleBorderColor = const Color(0xFF39FF14);
+      textColor = const Color(0xFF39FF14);
+    } else if (showResult && isSelected && !isCorrect) {
+      bubbleFill = const Color(0xFFFF1A00).withValues(alpha: 0.25);
+      borderColor = const Color(0xFFFF1A00);
+      bubbleBorderColor = const Color(0xFFFF1A00);
+      textColor = const Color(0xFFFF4040);
+    } else if (isSelected) {
+      bubbleFill = const Color(0xFFFFB800).withValues(alpha: 0.30);
+      borderColor = const Color(0xFFFFB800);
+      bubbleBorderColor = const Color(0xFFFFB800);
+      textColor = const Color(0xFFFFB800);
+    }
+
+    return GestureDetector(
+      onTapDown: (_) {
+        if (!_answered) setState(() => _pressedIndex = origIdx);
+      },
+      onTapUp: (_) {
+        setState(() => _pressedIndex = null);
+        _selectAnswer(origIdx);
+      },
+      onTapCancel: () => setState(() => _pressedIndex = null),
+      child: AnimatedScale(
+        scale: isPressed ? 0.94 : 1.0,
+        duration: const Duration(milliseconds: 60),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          decoration: BoxDecoration(
+            color: isSelected
+                ? borderColor.withValues(alpha: 0.08)
+                : Colors.black.withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: borderColor, width: 2),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: borderColor.withValues(alpha: 0.35),
+                      blurRadius: 10,
+                    )
+                  ]
+                : null,
+          ),
+          child: Row(
+            children: [
+              // Exam bubble — the signature element
+              Container(
+                width: 30,
+                height: 30,
+                margin: const EdgeInsets.only(left: 10, right: 8),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: bubbleBorderColor, width: 2),
+                  color: bubbleFill,
+                ),
+                child: Center(
                   child: Text(
-                    '${labels[origIdx]}) ${widget.question.options[origIdx]}',
+                    labels[origIdx],
+                    style: GoogleFonts.blackOpsOne(
+                      textStyle: TextStyle(
+                        color: isSelected
+                            ? bubbleBorderColor
+                            : const Color(0xFFFFB800).withValues(alpha: 0.7),
+                        fontSize: 11,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              // Answer text
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+                  child: Text(
+                    widget.question.options[origIdx],
                     style: TextStyle(
                       color: textColor,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
-                    textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              );
-            }).toList(),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
