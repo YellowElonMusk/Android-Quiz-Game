@@ -1,6 +1,6 @@
 # quiz_fighter
 
-A new Flutter project.
+A Quiz Game made in Flutter
 
 ## Getting Started
 
